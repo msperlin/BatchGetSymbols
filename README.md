@@ -1,14 +1,3 @@
----
-title: "Using BatchGetSymbols to download financial data for several tickers"
-author: "Marcelo Perlin"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{How to use BatchGetSymbols}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
 ## Motivation
 
 One of the great things of working in finance is that financial datasets from capital markets are freely available from sources such as Google and Yahoo Finance. This is an excelent feature for building up to date content for classes and conducting academic research. 
