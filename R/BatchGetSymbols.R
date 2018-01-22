@@ -1,4 +1,4 @@
-#' Function to download financial datas from a vector of tickers
+#' Function to download financial data
 #'
 #' This function is designed to make batch downloads of financial data using \code{\link[quantmod]{getSymbols}}.
 #' Based on a set of tickers and a time period, the function will download the data for each ticker and return a report of the process, along with the actual data in the long dataframe format.
@@ -35,7 +35,7 @@
 #'
 #' l.out <- BatchGetSymbols(tickers = tickers,
 #'                          first.date = first.date,
-#'                         last.date = last.date)
+#'                         last.date = last.date, do.cache=FALSE)
 #'
 #' print(l.out$df.control)
 #' print(l.out$df.tickers)
@@ -156,7 +156,7 @@ BatchGetSymbols <- function(tickers,
       total.obs = nrow(out)
       perc.benchmark.dates = sum(out$ref.date %in% df.bench$ref.date)/length(df.bench$ref.date)
 
-      if (perc.benchmark.dates>=thresh.bad.data){
+      if (perc.benchmark.dates >= thresh.bad.data){
         threshold.decision = 'KEEP'
       } else {
         threshold.decision = 'OUT'
