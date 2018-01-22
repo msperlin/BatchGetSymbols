@@ -8,20 +8,19 @@ Package BatchGetSymbols is my solution to this problem. Based on a list of ticke
 
 ## Main features:
 
-
-- Organizes price data in a tabular format
-- Also returns the vector of returns from prices
-- A clever cache system was implemented in version 2.0, meaning that the data is saved locally and only missings portion of the data are downloaded, when needed. 
-- Includes function for changing long format to wide
+- Organizes data in a tabular format, returning prices and returns
+- A cache system was implemented in version 2.0, meaning that the data is saved locally and only missings portions of the data are downloaded, if needed. 
+- User can choose a complete/balanced dataset output. NA values are set when missing data.
+- Allows the choice for the wide format, with dates as columns
 
 
 ## Installation
 
 ```
-# CRAN
+# CRAN (official release)
 install.packages('BatchGetSymbols')
 
-# Github
+# Github (dev version)
 devtools::install_github('msperlin/BatchGetSymbols')
 ```
 
