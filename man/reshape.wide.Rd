@@ -2,7 +2,7 @@
 % Please edit documentation in R/Utils.R
 \name{reshape.wide}
 \alias{reshape.wide}
-\title{Transforms a dataframe in long format to a list of dataframes in the wide format}
+\title{Transforms a dataframe in the long format to a list of dataframes in the wide format}
 \usage{
 reshape.wide(df.tickers)
 }
@@ -13,7 +13,7 @@ reshape.wide(df.tickers)
 A list with dataframes in the wide format
 }
 \description{
-Transforms a dataframe in long format to a list of dataframes in the wide format
+Transforms a dataframe in the long format to a list of dataframes in the wide format
 }
 \examples{
 

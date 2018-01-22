@@ -2,7 +2,7 @@
 % Please edit documentation in R/Get_Ibov_Stocks.R
 \name{GetIbovStocks}
 \alias{GetIbovStocks}
-\title{Function to download the current components of the Ibovespa index from Wikipedia}
+\title{Function to download the current components of the Ibovespa index from Bovespa website}
 \usage{
 GetIbovStocks()
 }
@@ -10,7 +10,7 @@ GetIbovStocks()
 A dataframe that includes a column with the list of tickers of companies that belong to the Ibovespa index
 }
 \description{
-This function scrapes the stocks that constitute the SP500 index from the wikipedia page at https://en.wikipedia.org/wiki/List_of_S%26P_500_companies.
+This function scrapes the stocks that constitute tSP500 index from the wikipedia page at http://bvmf.bmfbovespa.com.br/indices/ResumoCarteiraTeorica.aspx?Indice=IBOV&idioma=pt-br.
 }
 \examples{
 \dontrun{

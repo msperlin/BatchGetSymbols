@@ -16,7 +16,7 @@ myGetSymbols(ticker, src = "yahoo", first.date, last.date, do.cache = TRUE,
 
 \item{last.date}{The last date to download data (date or char as YYYY-MM-DD)}
 
-\item{do.cache}{Use caching system ? (default = TRUE)}
+\item{do.cache}{Use caching system? (default = TRUE)}
 
 \item{cache.folder}{Where to save cache files? (default = 'BGS_Cache')}
 }
@@ -25,8 +25,7 @@ A dataframe with the financial data
 }
 \description{
 This is a helper function to \code{\link{BatchGetSymbols}} and it should normally not be called directly. The purpose of this function is to download financial data based on a ticker and a time period.
-The main difference from \code{\link[quantmod]{getSymbols}} is that it imports the data as a dataframe with proper named columns,
-making it easy to aggregate the resulting dataframe with data from other tickers.
+The main difference from \code{\link[quantmod]{getSymbols}} is that it imports the data as a dataframe with proper named columns and saves data locally with the caching system.
 }
 \examples{
 ticker <- 'FB'

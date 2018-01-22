@@ -2,10 +2,10 @@
 % Please edit documentation in R/BatchGetSymbols.R
 \name{BatchGetSymbols}
 \alias{BatchGetSymbols}
-\title{Function to download financial data from a vector of tickers}
+\title{Function to download financial datas from a vector of tickers}
 \usage{
 BatchGetSymbols(tickers, first.date = Sys.Date() - 30,
-  last.date = Sys.Date(), thresh.bad.data = 0.9, bench.ticker = "^GSPC",
+  last.date = Sys.Date(), thresh.bad.data = 0.75, bench.ticker = "^GSPC",
   type.return = "arit", do.complete.data = FALSE, do.cache = TRUE,
   cache.folder = "BGS_Cache")
 }
@@ -18,15 +18,15 @@ the data can either be Google or Yahoo. The function automatically selects the s
 \item{last.date}{The last date to download data (date or char as YYYY-MM-DD)}
 
 \item{thresh.bad.data}{A percentage threshold for defining bad data. The dates of the benchmark ticker are compared to each asset. If the percentage of non-missing dates
-with respect to the benchmark ticker is lower than thresh.bad.data, the function will ignore the asset (default = 0.9)}
+with respect to the benchmark ticker is lower than thresh.bad.data, the function will ignore the asset (default = 0.75)}
 
-\item{bench.ticker}{The ticker of the benchmark asset used to compared dates. My suggestion is to use the main stock index of the market from where the data is coming from (default = ^GSPC (SP500, US market))}
+\item{bench.ticker}{The ticker of the benchmark asset used to compare dates. My suggestion is to use the main stock index of the market from where the data is coming from (default = ^GSPC (SP500, US market))}
 
 \item{type.return}{Type of price return to calculate: 'arit' (default) - aritmetic, 'log' - log returns.}
 
-\item{do.complete.data}{Return complete/balanced dataset? If TRUE, all missing pairs of ticker-date will be replaced by NA (default = FALSE)}
+\item{do.complete.data}{Return a complete/balanced dataset? If TRUE, all missing pairs of ticker-date will be replaced by NA (default = FALSE)}
 
-\item{do.cache}{Use caching system ? (default = TRUE)}
+\item{do.cache}{Use caching system? (default = TRUE)}
 
 \item{cache.folder}{Where to save cache files? (default = 'BGS_Cache')}
 }
@@ -39,6 +39,7 @@ A list with the following items: \describe{
 This function is designed to make batch downloads of financial data using \code{\link[quantmod]{getSymbols}}.
 Based on a set of tickers and a time period, the function will download the data for each ticker and return a report of the process, along with the actual data in the long dataframe format.
 The main advantage of the function is that it automatically recognizes the source of the dataset from the ticker and structures the resulting data from different sources in the long format.
+A caching system is also presente, making it very fast.
 }
 \section{Warning}{
 

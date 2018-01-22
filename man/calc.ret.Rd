@@ -2,7 +2,7 @@
 % Please edit documentation in R/Utils.R
 \name{calc.ret}
 \alias{calc.ret}
-\title{Function to calculate returns from a price vector}
+\title{Function to calculate returns from a price and ticker vector}
 \usage{
 calc.ret(P, tickers = rep("ticker", length(P)), type.return = "arit")
 }
@@ -17,7 +17,7 @@ calc.ret(P, tickers = rep("ticker", length(P)), type.return = "arit")
 A vector of returns
 }
 \description{
-Function to calculate returns from a price vector
+Created so that a return column is added to a dataframe with prices in the long (tidy) format.
 }
 \examples{
 P <- c(1,2,3)

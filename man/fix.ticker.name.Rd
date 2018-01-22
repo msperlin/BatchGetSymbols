@@ -13,7 +13,7 @@ fix.ticker.name(ticker.in)
 A good ticker name
 }
 \description{
-Removes bad symbols from names of tickers. This is usefull for naming files.
+Removes bad symbols from names of tickers. This is useful for naming files with cache system.
 }
 \examples{
 bad.ticker <- '^GSPC'
