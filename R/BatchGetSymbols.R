@@ -164,7 +164,7 @@ BatchGetSymbols <- function(tickers,
 
       morale.boost <- c(rep(c('OK!', 'Got it!','Nice!','Good stuff!',
                               'Looking good!', 'Good job!', 'Well done!',
-                              'Fells good!', 'You got it!', 'Youre doing good!'), 10),
+                              'Feels good!', 'You got it!', 'Youre doing good!'), 10),
                         'Boa!', 'Mas bah tche, que coisa linda!',
                         'Mais contente que cusco de cozinheira!',
                         'Feliz que nem lambari de sanga!',
