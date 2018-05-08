@@ -1,3 +1,9 @@
+### Version 2.1  (2018-05-08)
+
+Small update:
+
+- added startup message with book link
+
 ### Version 2.0  (2018-01-22)
 
 Major update:

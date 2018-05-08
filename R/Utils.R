@@ -146,3 +146,16 @@ calc.ret <- function(P,
 
   return(ret)
 }
+
+
+
+.onAttach <- function(libname,pkgname) {
+
+  if (interactive()) {
+    msg <- paste0('\nHi ', Sys.getenv('USER'), '! Want to learn more about using R in Finance? Check out the book at https://amzn.to/2I5FFnE')
+  } else {
+    msg <- ''
+  }
+  packageStartupMessage(msg)
+
+}

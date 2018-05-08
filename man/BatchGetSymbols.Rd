@@ -2,7 +2,7 @@
 % Please edit documentation in R/BatchGetSymbols.R
 \name{BatchGetSymbols}
 \alias{BatchGetSymbols}
-\title{Function to download financial datas from a vector of tickers}
+\title{Function to download financial data}
 \usage{
 BatchGetSymbols(tickers, first.date = Sys.Date() - 30,
   last.date = Sys.Date(), thresh.bad.data = 0.75, bench.ticker = "^GSPC",
