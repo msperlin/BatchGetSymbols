@@ -5,8 +5,9 @@
 \title{Function to download financial data}
 \usage{
 BatchGetSymbols(tickers, first.date = Sys.Date() - 30,
-  last.date = Sys.Date(), thresh.bad.data = 0.75, bench.ticker = "^GSPC",
-  type.return = "arit", do.complete.data = FALSE, do.cache = TRUE,
+  last.date = Sys.Date(), thresh.bad.data = 0.75,
+  bench.ticker = "^GSPC", type.return = "arit", freq.data = "daily",
+  do.complete.data = FALSE, do.cache = TRUE,
   cache.folder = "BGS_Cache")
 }
 \arguments{
@@ -23,6 +24,8 @@ with respect to the benchmark ticker is lower than thresh.bad.data, the function
 \item{bench.ticker}{The ticker of the benchmark asset used to compare dates. My suggestion is to use the main stock index of the market from where the data is coming from (default = ^GSPC (SP500, US market))}
 
 \item{type.return}{Type of price return to calculate: 'arit' (default) - aritmetic, 'log' - log returns.}
+
+\item{freq.data}{Frequency of financial data ('daily', 'weekly', 'monthly', 'yearly')}
 
 \item{do.complete.data}{Return a complete/balanced dataset? If TRUE, all missing pairs of ticker-date will be replaced by NA (default = FALSE)}
 

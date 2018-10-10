@@ -1,3 +1,9 @@
+### Version 2.2  (2018-10-10)
+
+Small update:
+
+- Users can now set frequency of data
+
 ### Version 2.1  (2018-05-08)
 
 Small update:

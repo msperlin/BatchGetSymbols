@@ -4,8 +4,8 @@
 \alias{myGetSymbols}
 \title{An improved version of function \code{\link[quantmod]{getSymbols}} from quantmod}
 \usage{
-myGetSymbols(ticker, src = "yahoo", first.date, last.date, do.cache = TRUE,
-  cache.folder = file.path(tempdir(), "BGS_Cache"))
+myGetSymbols(ticker, src = "yahoo", first.date, last.date,
+  do.cache = TRUE, cache.folder = file.path(tempdir(), "BGS_Cache"))
 }
 \arguments{
 \item{ticker}{A single ticker to download data}

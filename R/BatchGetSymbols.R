@@ -15,6 +15,7 @@
 #' @param last.date The last date to download data (date or char as YYYY-MM-DD)
 #' @param bench.ticker The ticker of the benchmark asset used to compare dates. My suggestion is to use the main stock index of the market from where the data is coming from (default = ^GSPC (SP500, US market))
 #' @param type.return Type of price return to calculate: 'arit' (default) - aritmetic, 'log' - log returns.
+#' @param freq.data Frequency of financial data ('daily', 'weekly', 'monthly', 'yearly')
 #' @param thresh.bad.data A percentage threshold for defining bad data. The dates of the benchmark ticker are compared to each asset. If the percentage of non-missing dates
 #'  with respect to the benchmark ticker is lower than thresh.bad.data, the function will ignore the asset (default = 0.75)
 #' @param do.complete.data Return a complete/balanced dataset? If TRUE, all missing pairs of ticker-date will be replaced by NA (default = FALSE)
@@ -24,6 +25,7 @@
 #' \item{df.control }{A dataframe containing the results of the download process for each asset}
 #' \item{df.tickers}{A dataframe with the financial data for all valid tickers} }
 #' @export
+#' @import dplyr
 #'
 #' @seealso \link[quantmod]{getSymbols}
 #'
@@ -45,6 +47,7 @@ BatchGetSymbols <- function(tickers,
                             thresh.bad.data = 0.75,
                             bench.ticker = '^GSPC',
                             type.return = 'arit',
+                            freq.data = 'daily',
                             do.complete.data = FALSE,
                             do.cache = TRUE,
                             cache.folder = 'BGS_Cache') {
@@ -61,6 +64,11 @@ BatchGetSymbols <- function(tickers,
   possible.values <- c('arit', 'log')
   if (!any(type.return %in% possible.values)) {
     stop(paste0('Input type.ret should be one of:\n\n', paste0(possible.values, collapse = '\n')))
+  }
+
+  possible.values <- c('daily', 'weekly', 'monthly', 'yearly')
+  if (!any(freq.data %in% possible.values)) {
+    stop(paste0('Input freq.data should be one of:\n\n', paste0(possible.values, collapse = '\n')))
   }
 
   # check date class
@@ -201,6 +209,45 @@ BatchGetSymbols <- function(tickers,
   idx <- df.tickers$ticker %in% tickers.to.keep
   df.tickers <- df.tickers[idx, ]
 
+  # do data manipulations
+  if (do.complete.data) {
+    ticker <- ref.date <- NULL # for cran check: "no visible binding for global..."
+    df.tickers <- tidyr::complete(df.tickers, ticker, ref.date)
+  }
+
+  # change frequency of data
+  if (freq.data != 'daily') {
+
+    str.freq <- switch(freq.data,
+      'weekly' = '1 week',
+      'monthly' = '1 month',
+      'yearly' = '1 year')
+
+    week.vec <- seq(as.Date(paste0(lubridate::year(min(df.tickers$ref.date)), '-01-01')),
+                    as.Date(paste0(lubridate::year(max(df.tickers$ref.date))+1, '-12-31')),
+                    by = str.freq)
+
+    df.tickers$time.groups <- cut(x = df.tickers$ref.date, breaks = week.vec, right = FALSE)
+
+    # set NULL vars for CRAN check: "no visible binding..."
+    time.groups <- volume <- price.open <- price.close <- price.adjusted <- NULL
+
+    df.tickers <- df.tickers %>%
+      group_by(time.groups, ticker) %>%
+      summarise(ref.date = min(ref.date),
+                volume = sum(volume, na.rm = TRUE),
+                price.open = first(price.open),
+                price.high = max(price.close),
+                price.low = min(price.close),
+                price.close = first(price.close),
+                price.adjusted = first(price.adjusted)) %>%
+      #select(-time.groups) %>%
+      arrange(ticker, ref.date)
+
+    df.tickers$time.groups <- NULL
+  }
+
+
   # calculate returns
   df.tickers$ret.adjusted.prices <- calc.ret(df.tickers$price.adjusted,
                                              df.tickers$ticker,
@@ -208,12 +255,6 @@ BatchGetSymbols <- function(tickers,
   df.tickers$ret.closing.prices  <- calc.ret(df.tickers$price.close,
                                              df.tickers$ticker,
                                              type.return)
-
-  # do data manipulations
-  if (do.complete.data) {
-    ticker <- ref.date <- NULL # for cran check: "no visible binding for global..."
-    df.tickers <- tidyr::complete(df.tickers, ticker, ref.date)
-  }
 
   my.l <- list(df.control = df.control,
                df.tickers = df.tickers)
