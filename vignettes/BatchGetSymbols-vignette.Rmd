@@ -23,6 +23,7 @@ Package BatchGetSymbols is my solution to this problem. Based on a list of ticke
 - A cache system was implemented in version 2.0, meaning that the data is saved locally and only missings portions of the data are downloaded, if needed. 
 - User can choose a complete/balanced dataset output. NA values are set when missing data.
 - Allows the choice for the wide format, with dates as columns
+- Users can choose the frequency of the resulting dataset
 
 
 ## A simple example
@@ -37,13 +38,14 @@ library(BatchGetSymbols)
 # set dates
 first.date <- Sys.Date() - 60
 last.date <- Sys.Date()
-
+freq.data <- 'daily'
 # set tickers
 tickers <- c('FB','NYSE:MMM','PETR4.SA','abcdef')
 
 l.out <- BatchGetSymbols(tickers = tickers, 
                          first.date = first.date,
                          last.date = last.date, 
+                         freq.data = freq.data,
                          cache.folder = file.path(tempdir(), 
                                                   'BGS_Cache') ) # cache in tempdir()
 
