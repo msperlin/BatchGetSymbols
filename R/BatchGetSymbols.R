@@ -66,6 +66,13 @@ BatchGetSymbols <- function(tickers,
     stop(paste0('Input type.ret should be one of:\n\n', paste0(possible.values, collapse = '\n')))
   }
 
+  # check for NA
+  if (any(is.na(tickers))) {
+    my.msg <- paste0('Found NA value in ticker vector.',
+                     'You need to remove it before running BatchGetSymbols.')
+    stop(my.msg)
+  }
+
   possible.values <- c('daily', 'weekly', 'monthly', 'yearly')
   if (!any(freq.data %in% possible.values)) {
     stop(paste0('Input freq.data should be one of:\n\n', paste0(possible.values, collapse = '\n')))
