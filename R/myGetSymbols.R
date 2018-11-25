@@ -1,6 +1,6 @@
 #' An improved version of function \code{\link[quantmod]{getSymbols}} from quantmod
 #'
-#' This is a helper function to \code{\link{BatchGetSymbols}} and it should normally not be called directly. The purpose of this function is to download financial data based on a ticker and a time period.
+#' This is a helper function to \code{\link{BatchGetSymbols}} and it should normaly not be called directly. The purpose of this function is to download financial data based on a ticker and a time period.
 #' The main difference from \code{\link[quantmod]{getSymbols}} is that it imports the data as a dataframe with proper named columns and saves data locally with the caching system.
 #'
 #' @param ticker A single ticker to download data
@@ -148,10 +148,11 @@ myGetSymbols <- function(ticker,
                                first.date,
                                last.date)
 
-      saveRDS(df.out, file = file.path(cache.folder, my.f.out))
+      # only saves if there is data
+      if (nrow(df.out) > 1) {
+        saveRDS(df.out, file = file.path(cache.folder, my.f.out))
+      }
     }
-
-    # sleep for a bit (dont abuse yahoo or google!)
 
   } else {
     df.out <- get.clean.data(ticker,

@@ -4,7 +4,10 @@
 \alias{GetIbovStocks}
 \title{Function to download the current components of the Ibovespa index from Bovespa website}
 \usage{
-GetIbovStocks()
+GetIbovStocks(max.tries = 10)
+}
+\arguments{
+\item{max.tries}{Maximum number of attempts to download the data}
 }
 \value{
 A dataframe that includes a column with the list of tickers of companies that belong to the Ibovespa index

@@ -24,7 +24,7 @@ myGetSymbols(ticker, src = "yahoo", first.date, last.date,
 A dataframe with the financial data
 }
 \description{
-This is a helper function to \code{\link{BatchGetSymbols}} and it should normally not be called directly. The purpose of this function is to download financial data based on a ticker and a time period.
+This is a helper function to \code{\link{BatchGetSymbols}} and it should normaly not be called directly. The purpose of this function is to download financial data based on a ticker and a time period.
 The main difference from \code{\link[quantmod]{getSymbols}} is that it imports the data as a dataframe with proper named columns and saves data locally with the caching system.
 }
 \examples{

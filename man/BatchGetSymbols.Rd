@@ -7,8 +7,8 @@
 BatchGetSymbols(tickers, first.date = Sys.Date() - 30,
   last.date = Sys.Date(), thresh.bad.data = 0.75,
   bench.ticker = "^GSPC", type.return = "arit", freq.data = "daily",
-  do.complete.data = FALSE, do.cache = TRUE,
-  cache.folder = "BGS_Cache")
+  do.complete.data = FALSE, do.fill.missing.prices = TRUE,
+  do.cache = TRUE, cache.folder = "BGS_Cache")
 }
 \arguments{
 \item{tickers}{A vector of tickers. If not sure whether the ticker is available, check the websites of google and yahoo finance. The source for downloading
@@ -27,7 +27,9 @@ with respect to the benchmark ticker is lower than thresh.bad.data, the function
 
 \item{freq.data}{Frequency of financial data ('daily', 'weekly', 'monthly', 'yearly')}
 
-\item{do.complete.data}{Return a complete/balanced dataset? If TRUE, all missing pairs of ticker-date will be replaced by NA (default = FALSE)}
+\item{do.complete.data}{Return a complete/balanced dataset? If TRUE, all missing pairs of ticker-date will be replaced by NA or closest price (see input do.fill.missing.prices). Default = FALSE.}
+
+\item{do.fill.missing.prices}{Finds all missing prices and replaces them by their closest price with preference for the previous price. This ensures a balanced dataset for all assets, without any NA. Default = TRUE.}
 
 \item{do.cache}{Use caching system? (default = TRUE)}
 
@@ -51,7 +53,7 @@ Do notice that adjusted prices are not available from google finance. When using
 }
 
 \examples{
-tickers <- c('FB','NYSE:MMM')
+tickers <- c('FB','MMM')
 
 first.date <- Sys.Date()-30
 last.date <- Sys.Date()

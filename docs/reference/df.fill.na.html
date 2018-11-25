@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function to download the current components of the Ibovespa index from Bovespa website — GetIbovStocks • BatchGetSymbols</title>
+<title>Replaces NA values in dataframe for closest price — df.fill.na • BatchGetSymbols</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Function to download the current components of the Ibovespa index from Bovespa website — GetIbovStocks" />
+<meta property="og:title" content="Replaces NA values in dataframe for closest price — df.fill.na" />
 
-<meta property="og:description" content="This function scrapes the stocks that constitute tSP500 index from the wikipedia page at http://bvmf.bmfbovespa.com.br/indices/ResumoCarteiraTeorica.aspx?Indice=IBOV&amp;amp;idioma=pt-br." />
+<meta property="og:description" content="Helper function for BatchGetSymbols. Replaces NA values and returns fixed dataframe." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,38 +109,38 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Function to download the current components of the Ibovespa index from Bovespa website</h1>
+    <h1>Replaces NA values in dataframe for closest price</h1>
     
-    <div class="hidden name"><code>GetIbovStocks.Rd</code></div>
+    <div class="hidden name"><code>df.fill.na.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function scrapes the stocks that constitute tSP500 index from the wikipedia page at http://bvmf.bmfbovespa.com.br/indices/ResumoCarteiraTeorica.aspx?Indice=IBOV&amp;idioma=pt-br.</p>
+    <p>Helper function for BatchGetSymbols. Replaces NA values and returns fixed dataframe.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>GetIbovStocks</span>(<span class='kw'>max.tries</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+    <pre class="usage"><span class='fu'>df.fill.na</span>(<span class='no'>df.in</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>max.tries</th>
-      <td><p>Maximum number of attempts to download the data</p></td>
+      <th>df.in</th>
+      <td><p>DAtaframe to be fixed</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe that includes a column with the list of tickers of companies that belong to the Ibovespa index</p>
+    <p>A fixed dataframe.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>df.ibov</span> <span class='kw'>&lt;-</span> <span class='fu'>GetIbovStocks</span>()
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>df.ibov</span>$<span class='no'>tickers</span>)
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'>
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>price.adjusted</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>NA</span>, <span class='fl'>10</span>, <span class='fl'>11</span>, <span class='fl'>NA</span>, <span class='fl'>12</span>, <span class='fl'>12.5</span>, <span class='fl'>NA</span> ), <span class='kw'>volume</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>10</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>5</span>))
+
+<span class='no'>df.fixed.na</span> <span class='kw'>&lt;-</span> <span class='fu'>df.fill.na</span>(<span class='no'>df</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

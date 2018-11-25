@@ -36,7 +36,7 @@ get.clean.data <- function(tickers,
                            last.date) {
 
   # dont push luck with yahoo finance servers
-  # No problem in test, leave it unrestricted
+  # No problem in my testings, leave it unrestricted
   #Sys.sleep(0.5)
 
   # set empty df for errors
@@ -147,6 +147,68 @@ calc.ret <- function(P,
   return(ret)
 }
 
+#' Replaces NA values in dataframe for closest price
+#'
+#' Helper function for BatchGetSymbols. Replaces NA values and returns fixed dataframe.
+#'
+#' @param df.in DAtaframe to be fixed
+#'
+#' @return A fixed dataframe.
+#' @export
+#'
+#' @examples
+#'
+#' df <- data.frame(price.adjusted = c(NA, 10, 11, NA, 12, 12.5, NA ), volume = c(1,10, 0, 2, 0, 1, 5))
+#'
+#' df.fixed.na <- df.fill.na(df)
+#'
+df.fill.na = function(df.in) {
+
+
+  # find NAs or volume == 0
+  idx.na <- which(is.na(df.in$price.adjusted) |
+                    df.in$volume == 0)
+
+  if (length(idx.na) ==0) return(df.in)
+
+  idx.not.na <- which(!is.na(df.in$price.adjusted))
+
+  cols.to.adjust <- c("price.open", "price.high", "price.low",
+                      "price.close", "price.adjusted")
+
+  cols.to.adjust <- cols.to.adjust[cols.to.adjust %in% names(df.in)]
+
+  # function for finding closest price
+  fct.find.min.dist <- function(x, vec.comp) {
+
+    if (x < min(vec.comp)) return(min(vec.comp))
+
+    my.dist <- x - vec.comp
+    my.dist <- my.dist[my.dist > 0]
+    idx <- which.min(my.dist)
+
+    return(vec.comp[idx])
+
+  }
+
+  for (i.col in cols.to.adjust) {
+
+    # adjust for NA by replacing values
+    idx.to.use <- sapply(idx.na,
+                         fct.find.min.dist,
+                         vec.comp = idx.not.na )
+
+    df.in[idx.na, i.col] <- unlist(df.in[idx.to.use, i.col])
+
+  }
+
+  # adjust volume for all NAs
+  df.in$volume[idx.na] <- 0
+
+  return(df.in)
+
+}
+
 
 
 .onAttach <- function(libname,pkgname) {
@@ -159,3 +221,4 @@ calc.ret <- function(P,
   packageStartupMessage(msg)
 
 }
+

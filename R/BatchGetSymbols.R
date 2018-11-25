@@ -18,7 +18,8 @@
 #' @param freq.data Frequency of financial data ('daily', 'weekly', 'monthly', 'yearly')
 #' @param thresh.bad.data A percentage threshold for defining bad data. The dates of the benchmark ticker are compared to each asset. If the percentage of non-missing dates
 #'  with respect to the benchmark ticker is lower than thresh.bad.data, the function will ignore the asset (default = 0.75)
-#' @param do.complete.data Return a complete/balanced dataset? If TRUE, all missing pairs of ticker-date will be replaced by NA (default = FALSE)
+#' @param do.complete.data Return a complete/balanced dataset? If TRUE, all missing pairs of ticker-date will be replaced by NA or closest price (see input do.fill.missing.prices). Default = FALSE.
+#' @param do.fill.missing.prices Finds all missing prices and replaces them by their closest price with preference for the previous price. This ensures a balanced dataset for all assets, without any NA. Default = TRUE.
 #' @param do.cache Use caching system? (default = TRUE)
 #' @param cache.folder Where to save cache files? (default = 'BGS_Cache')
 #' @return A list with the following items: \describe{
@@ -30,7 +31,7 @@
 #' @seealso \link[quantmod]{getSymbols}
 #'
 #' @examples
-#' tickers <- c('FB','NYSE:MMM')
+#' tickers <- c('FB','MMM')
 #'
 #' first.date <- Sys.Date()-30
 #' last.date <- Sys.Date()
@@ -49,6 +50,7 @@ BatchGetSymbols <- function(tickers,
                             type.return = 'arit',
                             freq.data = 'daily',
                             do.complete.data = FALSE,
+                            do.fill.missing.prices = TRUE,
                             do.cache = TRUE,
                             cache.folder = 'BGS_Cache') {
   # check for internet
@@ -111,6 +113,11 @@ BatchGetSymbols <- function(tickers,
 
   # build tickers.src (google tickers have : in their name)
   tickers.src <- ifelse(stringr::str_detect(tickers,':'),'google','yahoo')
+
+  if (any(tickers.src == 'google')) {
+    my.msg <- 'Google is no longer providing price data. You should be using YFinance'
+    stop(my.msg)
+  }
 
   # fix for dates with google finance data
   # details: http://stackoverflow.com/questions/20472376/quantmod-empty-dates-in-getsymbols-from-google
@@ -186,17 +193,17 @@ BatchGetSymbols <- function(tickers,
                         'Mais faceiro que guri de bombacha nova!')
 
       if (threshold.decision == 'KEEP') {
-        cat(paste0(' - ', sample(morale.boost, 1)))
+        cat(paste0(' - ', 'Got ', scales::percent(perc.benchmark.dates), ' of valid prices | ',
+                   sample(morale.boost, 1)))
       } else {
-        cat(paste0(' - OUT: not enough obs (see arg thresh.bad.data)'))
+        cat(paste0(' - ', 'Got ', scales::percent(perc.benchmark.dates), ' of valid prices | ',
+                   'OUT: not enough data (thresh.bad.data = ', scales::percent(thresh.bad.data), ')'))
 
       }
 
       # reconcile with cache
 
-
       df.tickers <- rbind(df.tickers, out)
-
 
     }
 
@@ -220,6 +227,12 @@ BatchGetSymbols <- function(tickers,
   if (do.complete.data) {
     ticker <- ref.date <- NULL # for cran check: "no visible binding for global..."
     df.tickers <- tidyr::complete(df.tickers, ticker, ref.date)
+
+    l.out <- lapply(split(df.tickers, f = df.tickers$ticker),
+                    df.fill.na)
+
+    df.tickers <- dplyr::bind_rows(l.out)
+    browser()
   }
 
   # change frequency of data

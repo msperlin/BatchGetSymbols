@@ -1,3 +1,9 @@
+## Version 2.3  (2018-11-25)
+
+- User can now choose to return a full balanced price dataset by filling NA values or volume == 0 for their closest prices.
+- Fixed small bug in cache system when an empty dataframe is returned
+- Fixed bug in function that downloadd ibovespa's composition
+
 ## Version 2.2  (2018-10-10)
 
 - Users can now set frequency of data (daily, weekly, monthly or yearly)
