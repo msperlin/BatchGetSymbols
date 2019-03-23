@@ -16,15 +16,16 @@ GetSP500Stocks <- function(){
   my.url <- 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
 
   read_html <- 0 # fix for global variable nagging from BUILD
-
+  my.xpath <- '//*[@id="mw-content-text"]/div/table[2]' # old xpath
+  my.xpath <- '//*[@id="constituents"]'
   df.SP500Stocks <- my.url %>%
     read_html() %>%
-    html_nodes(xpath='//*[@id="mw-content-text"]/div/table[2]') %>%
+    html_nodes(xpath = my.xpath) %>%
     html_table()
 
   df.SP500Stocks <- df.SP500Stocks[[1]]
 
-  colnames(df.SP500Stocks) <- c('tickers','company','SEC.filings','GICS.Sector','GICS.Sub.Industry','Address','Date.first.added','CIK', 'Founded')
+  colnames(df.SP500Stocks) <- c('company','tickers','SEC.filings','GICS.Sector','GICS.Sub.Industry','Address','Date.first.added','CIK', 'Founded')
 
   return(df.SP500Stocks)
 }
