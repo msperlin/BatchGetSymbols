@@ -1,3 +1,7 @@
+## Version 2.4  (2019-03-23)
+
+- Fixed bug in function that downloads SP500 data. 
+
 ## Version 2.3  (2018-11-25)
 
 - User can now choose to return a full balanced price dataset by filling NA values or volume == 0 for their closest prices.
