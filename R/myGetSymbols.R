@@ -5,6 +5,9 @@
 #'
 #' @param ticker A single ticker to download data
 #' @param src The source of the data ('google' or'yahoo')
+#' @param i.ticker A index for the stock that is downloading (for cat() purposes)
+#' @param length.tickers total number of stocks being downloaded (also for cat() purposes)
+#' @param df.bench Data for bechmark ticker
 #' @inheritParams BatchGetSymbols
 #'
 #' @return A dataframe with the financial data
@@ -24,11 +27,20 @@
 #'                           last.date = last.date)
 #' }
 myGetSymbols <- function(ticker,
+                         i.ticker,
+                         length.tickers,
                          src = 'yahoo',
                          first.date,
                          last.date,
                          do.cache = TRUE,
-                         cache.folder = file.path(tempdir(),'BGS_Cache')){
+                         cache.folder = file.path(tempdir(),'BGS_Cache'),
+                         df.bench = NULL,
+                         thresh.bad.data) {
+
+
+  cat(paste0('\n', ticker,
+             ' | ', src, ' (', i.ticker,'|',
+             length.tickers,')'))
 
 
   # do cache
@@ -41,7 +53,7 @@ myGetSymbols <- function(ticker,
       l.out <- stringr::str_split(tools::file_path_sans_ext(basename(my.cache.files)),
                                   '_')
 
-      df.cache.files <- dplyr::data_frame(f.name = my.cache.files,
+      df.cache.files <- dplyr::tibble(f.name = my.cache.files,
                                           ticker = sapply(l.out, function(x) x[1]),
                                           src =  sapply(l.out, function(x) x[2]),
                                           first.date =  as.Date(sapply(l.out, function(x) x[3])),
@@ -49,7 +61,7 @@ myGetSymbols <- function(ticker,
 
     } else {
       # empty df
-      df.cache.files <-  dplyr::data_frame(f.name = '',
+      df.cache.files <-  dplyr::tibble(f.name = '',
                                            ticker = '',
                                            src =  '',
                                            first.date =  first.date,
@@ -73,7 +85,6 @@ myGetSymbols <- function(ticker,
 
       df.cache <- data.frame()
       flag.dates <- TRUE
-
 
       cat(' | Found cache file')
       df.cache <- readRDS(temp.cache$f.name)
@@ -132,7 +143,8 @@ myGetSymbols <- function(ticker,
 
       # filter for dates
       ref.date <- NULL
-      df.out <- dplyr::filter(df.out, ref.date >= first.date,
+      df.out <- dplyr::filter(df.out,
+                              ref.date >= first.date,
                               ref.date <= last.date)
 
     } else {
@@ -150,6 +162,7 @@ myGetSymbols <- function(ticker,
 
       # only saves if there is data
       if (nrow(df.out) > 1) {
+        cat(' | Saving cache')
         saveRDS(df.out, file = file.path(cache.folder, my.f.out))
       }
     }
@@ -161,7 +174,58 @@ myGetSymbols <- function(ticker,
                              last.date)
   }
 
-  return(df.out)
+  # control for ERROr in download
+  if (nrow(df.out) == 0 ){
+    download.status = 'NOT OK'
+    total.obs = 0
+    perc.benchmark.dates = 0
+    threshold.decision = 'OUT'
+
+    df.out <- data.frame()
+    cat(' - Error in download..')
+  } else {
+
+    # control for returning data when importing bench ticker
+    if (is.null(df.bench)) return(df.out)
+
+    download.status = 'OK'
+    total.obs = nrow(df.out)
+    perc.benchmark.dates = sum(df.out$ref.date %in% df.bench$ref.date)/length(df.bench$ref.date)
+
+    if (perc.benchmark.dates >= thresh.bad.data){
+      threshold.decision = 'KEEP'
+    } else {
+      threshold.decision = 'OUT'
+    }
+
+    morale.boost <- c(rep(c('OK!', 'Got it!','Nice!','Good stuff!',
+                            'Looking good!', 'Good job!', 'Well done!',
+                            'Feels good!', 'You got it!', 'Youre doing good!'), 10),
+                      'Boa!', 'Mas bah tche, que coisa linda!',
+                      'Mais contente que cusco de cozinheira!',
+                      'Feliz que nem lambari de sanga!',
+                      'Mais faceiro que guri de bombacha nova!')
+
+    if (threshold.decision == 'KEEP') {
+      cat(paste0(' - ', 'Got ', scales::percent(perc.benchmark.dates), ' of valid prices | ',
+                 sample(morale.boost, 1)))
+    } else {
+      cat(paste0(' - ', 'Got ', scales::percent(perc.benchmark.dates), ' of valid prices | ',
+                 'OUT: not enough data (thresh.bad.data = ', scales::percent(thresh.bad.data), ')'))
+
+    }
+
+    df.control <- tibble::tibble(ticker=ticker,
+                                 src = src,
+                                 download.status,
+                                 total.obs,
+                                 perc.benchmark.dates,
+                                 threshold.decision)
+
+    l.out <- list(df.tickers = df.out, df.control = df.control)
+
+    return(l.out)
 
 
+  }
 }

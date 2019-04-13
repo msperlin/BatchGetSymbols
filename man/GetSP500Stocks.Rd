@@ -4,7 +4,12 @@
 \alias{GetSP500Stocks}
 \title{Function to download the current components of the SP500 index from Wikipedia}
 \usage{
-GetSP500Stocks()
+GetSP500Stocks(do.cache = TRUE, cache.folder = "BGS_Cache")
+}
+\arguments{
+\item{do.cache}{Use caching system? (default = TRUE)}
+
+\item{cache.folder}{Where to save cache files? (default = 'BGS_Cache')}
 }
 \value{
 A dataframe that includes a column with the list of tickers of companies that belong to the SP500 index

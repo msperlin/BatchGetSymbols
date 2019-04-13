@@ -22,6 +22,7 @@
 #' @param do.fill.missing.prices Finds all missing prices and replaces them by their closest price with preference for the previous price. This ensures a balanced dataset for all assets, without any NA. Default = TRUE.
 #' @param do.cache Use caching system? (default = TRUE)
 #' @param cache.folder Where to save cache files? (default = 'BGS_Cache')
+#' @param do.parallel Flag for using parallel or not (default = FALSE). Before using parallel, make sure you call function future::plan() first.
 #' @return A list with the following items: \describe{
 #' \item{df.control }{A dataframe containing the results of the download process for each asset}
 #' \item{df.tickers}{A dataframe with the financial data for all valid tickers} }
@@ -52,7 +53,8 @@ BatchGetSymbols <- function(tickers,
                             do.complete.data = FALSE,
                             do.fill.missing.prices = TRUE,
                             do.cache = TRUE,
-                            cache.folder = 'BGS_Cache') {
+                            cache.folder = 'BGS_Cache',
+                            do.parallel = FALSE) {
   # check for internet
   test.internet <- curl::has_internet()
   if (!test.internet) {
@@ -140,83 +142,70 @@ BatchGetSymbols <- function(tickers,
   bench.src <- ifelse(stringr::str_detect(bench.ticker,':'),'google','yahoo')
 
   df.bench <- myGetSymbols(ticker = bench.ticker,
+                           i.ticker = 1,
+                           length.tickers = 1,
                            src = bench.src,
                            first.date = first.date,
                            last.date = last.date,
                            do.cache = do.cache,
                            cache.folder = cache.folder)
 
-  df.tickers <- data.frame()
-  df.control <- data.frame()
-  for (i.ticker in seq_along(tickers)) {
+  # run fetching function for all tickers
 
-    src.now <- tickers.src[i.ticker]
-    ticker.now <- tickers[i.ticker]
+  l.args <- list(ticker = tickers,
+                 i.ticker = seq_along(tickers),
+                 length.tickers = length(tickers),
+                 src = tickers.src,
+                 first.date = first.date,
+                 last.date = last.date,
+                 do.cache = do.cache,
+                 cache.folder = cache.folder,
+                 df.bench = rep(list(df.bench), length(tickers)),
+                 thresh.bad.data = thresh.bad.data)
 
-    cat(paste0('\n', ticker.now,
-               ' | ', src.now, ' (',i.ticker,'|',length(tickers),')'))
+  if (!do.parallel) {
 
-    out <- myGetSymbols(ticker = ticker.now,
-                        src = src.now,
-                        first.date = first.date,
-                        last.date = last.date,
-                        do.cache = do.cache,
-                        cache.folder = cache.folder)
+  my.l <- purrr::pmap(.l = l.args,
+                      .f = myGetSymbols)
 
-    # control for ERROr in download
-    if (nrow(out) == 0 ){
-      download.status = 'NOT OK'
-      total.obs = 0
-      perc.benchmark.dates = 0
-      threshold.decision = 'OUT'
+  } else {
 
-      out <- data.frame()
-      cat(' - Error in download..')
 
-    } else {
-      download.status = 'OK'
-      total.obs = nrow(out)
-      perc.benchmark.dates = sum(out$ref.date %in% df.bench$ref.date)/length(df.bench$ref.date)
+    # test if plan() was called
+    # find number of used cores
+    formals.parallel <- formals(future::plan())
+    used.workers <- formals.parallel$workers
 
-      if (perc.benchmark.dates >= thresh.bad.data){
-        threshold.decision = 'KEEP'
-      } else {
-        threshold.decision = 'OUT'
-      }
+    available.cores <- future::availableCores()
 
-      morale.boost <- c(rep(c('OK!', 'Got it!','Nice!','Good stuff!',
-                              'Looking good!', 'Good job!', 'Well done!',
-                              'Feels good!', 'You got it!', 'Youre doing good!'), 10),
-                        'Boa!', 'Mas bah tche, que coisa linda!',
-                        'Mais contente que cusco de cozinheira!',
-                        'Feliz que nem lambari de sanga!',
-                        'Mais faceiro que guri de bombacha nova!')
+    cat(paste0('\nRunning parallel BatchGetSymbols with ', used.workers, ' cores (',
+               available.cores, ' available)'))
+    cat('\n\n')
 
-      if (threshold.decision == 'KEEP') {
-        cat(paste0(' - ', 'Got ', scales::percent(perc.benchmark.dates), ' of valid prices | ',
-                   sample(morale.boost, 1)))
-      } else {
-        cat(paste0(' - ', 'Got ', scales::percent(perc.benchmark.dates), ' of valid prices | ',
-                   'OUT: not enough data (thresh.bad.data = ', scales::percent(thresh.bad.data), ')'))
+    # check if plan was set
 
-      }
+    msg <- utils::capture.output(future::plan())
 
-      # reconcile with cache
+    flag <- stringr::str_detect(msg[1], 'sequential')
 
-      df.tickers <- rbind(df.tickers, out)
-
+    if (flag) {
+      stop(paste0('When using do.parallel = TRUE, you need to call future::plan() to configure your parallel settings. \n',
+                  'A suggestion, write the following lines:\n\n',
+                  'future::plan(future::multisession, workers = floor(parallel::detectCores()/2))',
+                  '\n\n',
+                  'The last line should be placed just before calling gbcbd_get_series. ',
+                  'Notice it will use half of your available cores so that your OS has some room to breathe.'))
     }
 
 
-    df.control <- rbind(df.control, data.frame(ticker=ticker.now,
-                                               src = src.now,
-                                               download.status,
-                                               total.obs,
-                                               perc.benchmark.dates,
-                                               threshold.decision))
+    my.l <- furrr::future_pmap(.l = l.args,
+                               .f = myGetSymbols,
+                               .progress = TRUE)
+
   }
 
-
+  df.tickers <- dplyr::bind_rows(purrr::map(my.l, 1))
+  df.control <- dplyr::bind_rows(purrr::map(my.l, 2))
 
   # remove tickers with bad data
   tickers.to.keep <- df.control$ticker[df.control$threshold.decision=='KEEP']
@@ -232,16 +221,16 @@ BatchGetSymbols <- function(tickers,
                     df.fill.na)
 
     df.tickers <- dplyr::bind_rows(l.out)
-    browser()
+
   }
 
   # change frequency of data
   if (freq.data != 'daily') {
 
     str.freq <- switch(freq.data,
-      'weekly' = '1 week',
-      'monthly' = '1 month',
-      'yearly' = '1 year')
+                       'weekly' = '1 week',
+                       'monthly' = '1 month',
+                       'yearly' = '1 year')
 
     week.vec <- seq(as.Date(paste0(lubridate::year(min(df.tickers$ref.date)), '-01-01')),
                     as.Date(paste0(lubridate::year(max(df.tickers$ref.date))+1, '-12-31')),
