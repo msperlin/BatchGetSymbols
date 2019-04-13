@@ -3,6 +3,8 @@
 #' This function scrapes the stocks that constitute tSP500 index from the wikipedia page at http://bvmf.bmfbovespa.com.br/indices/ResumoCarteiraTeorica.aspx?Indice=IBOV&idioma=pt-br.
 #'
 #' @param max.tries Maximum number of attempts to download the data
+#' @inheritParams BatchGetSymbols
+#'
 #' @return A dataframe that includes a column with the list of tickers of companies that belong to the Ibovespa index
 #' @export
 #' @examples
@@ -10,9 +12,23 @@
 #' df.ibov <- GetIbovStocks()
 #' print(df.ibov$tickers)
 #' }
-GetIbovStocks <- function(max.tries  = 10){
+GetIbovStocks <- function(do.cache = TRUE,
+                          cache.folder = 'BGS_Cache',
+                          max.tries  = 10){
+
+  cache.file <- file.path(cache.folder, paste0('Ibov_Composition_', Sys.Date(), '.rds') )
 
   # get list of ibovespa's tickers from wbsite
+
+  if (do.cache) {
+    # check if file exists
+    flag <- file.exists(cache.file)
+
+    if (flag) {
+      df.ibov.comp <- readRDS(cache.file)
+      return(df.ibov.comp)
+    }
+  }
 
   for (i.try in seq(max.tries)) {
     myUrl <- 'http://bvmf.bmfbovespa.com.br/indices/ResumoCarteiraTeorica.aspx?Indice=IBOV&idioma=pt-br'
@@ -34,6 +50,10 @@ GetIbovStocks <- function(max.tries  = 10){
 
   df.ibov.comp$ref.date <- Sys.Date()
   df.ibov.comp$tickers <- as.character(df.ibov.comp$tickers)
+
+  if (do.cache) {
+    saveRDS(df.ibov.comp, cache.file)
+  }
 
   return(df.ibov.comp)
 }

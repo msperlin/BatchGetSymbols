@@ -1,3 +1,8 @@
+## Version 2.5  (2019-04-13)
+
+- Implemented option for parallel computations with BatchGetSymbols
+- Added caching system for index grabing functions (SP500 and IBOV)
+
 ## Version 2.4  (2019-03-23)
 
 - Fixed bug in function that downloads SP500 data. 
@@ -6,7 +11,7 @@
 
 - User can now choose to return a full balanced price dataset by filling NA values or volume == 0 for their closest prices.
 - Fixed small bug in cache system when an empty dataframe is returned
-- Fixed bug in function that downloadd ibovespa's composition
+- Fixed bug in function that downloads ibovespa's composition
 
 ## Version 2.2  (2018-10-10)
 

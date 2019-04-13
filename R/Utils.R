@@ -35,8 +35,8 @@ get.clean.data <- function(tickers,
                            first.date,
                            last.date) {
 
-  # dont push luck with yahoo finance servers
-  # No problem in my testings, leave it unrestricted
+  # dont push luck with yahoo servers
+  # No problem in my testings, so far. You can safely leave it unrestricted
   #Sys.sleep(0.5)
 
   # set empty df for errors
