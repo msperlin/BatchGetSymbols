@@ -1,10 +1,10 @@
 ## Motivation
 
-[![](https://cranlogs.r-pkg.org/badges/BatchGetSymbols)](https://cran.rstudio.com/web/packages/BatchGetSymbols/index.html)
+[![](https://cranlogs.r-pkg.org/badges/BatchGetSymbols)](https://CRAN.R-project.org/package=BatchGetSymbols)
 
 One of the great things of working in finance is that financial datasets from capital markets are freely available from sources such as Yahoo Finance. This is an excelent feature for building up to date content for classes and conducting academic research. 
 
-In the past I have used function GetSymbols from the CRAN package [quantmod](https://cran.r-project.org/package=quantmod) in order to download end of day trade data for several stocks in the financial market. The problem in using GetSymbols is that it does not aggregate or clean the financial data for several tickers. In the usage of GetSymbols, each stock will have its own `xts` object with different column names and this makes it harder to store data from several tickers in a single dataframe. 
+In the past I have used function GetSymbols from the CRAN package [quantmod](https://CRAN.R-project.org/package=quantmod) in order to download end of day trade data for several stocks in the financial market. The problem in using GetSymbols is that it does not aggregate or clean the financial data for several tickers. In the usage of GetSymbols, each stock will have its own `xts` object with different column names and this makes it harder to store data from several tickers in a single dataframe. 
 
 Package BatchGetSymbols is my solution to this problem. Based on a list of tickers and a time period, BatchGetSymbols will download price data from yahoo finance and organize it so that you don't need to worry about cleaning it up yourself. 
 
@@ -30,4 +30,4 @@ devtools::install_github('msperlin/BatchGetSymbols')
 
 ## A simple example
 
-See [vignette](https://cran.r-project.org/package=BatchGetSymbols).
+See [vignette](https://CRAN.R-project.org/package=BatchGetSymbols).
