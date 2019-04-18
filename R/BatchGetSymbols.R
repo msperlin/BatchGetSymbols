@@ -171,7 +171,6 @@ BatchGetSymbols <- function(tickers,
   } else {
 
 
-    # test if plan() was called
     # find number of used cores
     formals.parallel <- formals(future::plan())
     used.workers <- formals.parallel$workers
@@ -182,8 +181,7 @@ BatchGetSymbols <- function(tickers,
                available.cores, ' available)'))
     cat('\n\n')
 
-    # check if plan was set
-
+    # test if plan() was called
     msg <- utils::capture.output(future::plan())
 
     flag <- stringr::str_detect(msg[1], 'sequential')
@@ -193,7 +191,7 @@ BatchGetSymbols <- function(tickers,
                   'A suggestion, write the following lines:\n\n',
                   'future::plan(future::multisession, workers = floor(parallel::detectCores()/2))',
                   '\n\n',
-                  'The last line should be placed just before calling gbcbd_get_series. ',
+                  'The last line should be placed just before calling BatchGetSymbols. ',
                   'Notice it will use half of your available cores so that your OS has some room to breathe.'))
     }
 

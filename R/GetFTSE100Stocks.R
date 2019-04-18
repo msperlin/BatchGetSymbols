@@ -1,6 +1,6 @@
 #' Function to download the current components of the FTSE100 index from Wikipedia
 #'
-#' This function scrapes the stocks that constitute the FTSE100 index from the wikipedia page at https://en.wikipedia.org/wiki/FTSE_100_Index#List_of_FTSE_100_companies.
+#' This function scrapes the stocks that constitute the FTSE100 index from the wikipedia page at <https://en.wikipedia.org/wiki/FTSE_100_Index#List_of_FTSE_100_companies>.
 #'
 #' @inheritParams BatchGetSymbols
 #'
