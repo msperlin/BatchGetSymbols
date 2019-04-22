@@ -42,6 +42,9 @@ GetFTSE100Stocks <- function(do.cache = TRUE,
   colnames(df.FTSE100Stocks) <- c('company','tickers','ICB.sector')
 
   if (do.cache) {
+
+    if (!dir.exists(cache.folder)) dir.create(cache.folder)
+
     saveRDS(df.FTSE100Stocks, cache.file)
   }
 

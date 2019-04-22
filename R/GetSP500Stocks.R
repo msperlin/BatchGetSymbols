@@ -43,7 +43,10 @@ GetSP500Stocks <- function(do.cache = TRUE,
                                 'GICS.Sub.Industry','Address','Date.first.added','CIK', 'Founded')
 
   if (do.cache) {
+    if (!dir.exists(cache.folder)) dir.create(cache.folder)
+
     saveRDS(df.SP500Stocks, cache.file)
+
   }
 
   return(df.SP500Stocks)

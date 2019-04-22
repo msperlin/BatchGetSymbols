@@ -52,6 +52,9 @@ GetIbovStocks <- function(do.cache = TRUE,
   df.ibov.comp$tickers <- as.character(df.ibov.comp$tickers)
 
   if (do.cache) {
+
+    if (!dir.exists(cache.folder)) dir.create(cache.folder)
+
     saveRDS(df.ibov.comp, cache.file)
   }
 
