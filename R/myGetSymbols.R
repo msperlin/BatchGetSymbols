@@ -35,12 +35,16 @@ myGetSymbols <- function(ticker,
                          do.cache = TRUE,
                          cache.folder = file.path(tempdir(),'BGS_Cache'),
                          df.bench = NULL,
+                         be.quiet = FALSE,
                          thresh.bad.data) {
 
 
-  cat(paste0('\n', ticker,
-             ' | ', src, ' (', i.ticker,'|',
-             length.tickers,')'))
+  if (!be.quiet) {
+    message(paste0('\n', ticker,
+                   ' | ', src, ' (', i.ticker,'|',
+                   length.tickers,')'), appendLF = FALSE )
+  }
+
 
 
   # do cache
@@ -54,18 +58,18 @@ myGetSymbols <- function(ticker,
                                   '_')
 
       df.cache.files <- dplyr::tibble(f.name = my.cache.files,
-                                          ticker = sapply(l.out, function(x) x[1]),
-                                          src =  sapply(l.out, function(x) x[2]),
-                                          first.date =  as.Date(sapply(l.out, function(x) x[3])),
-                                          last.date =  as.Date(sapply(l.out, function(x) x[4])))
+                                      ticker = sapply(l.out, function(x) x[1]),
+                                      src =  sapply(l.out, function(x) x[2]),
+                                      first.date =  as.Date(sapply(l.out, function(x) x[3])),
+                                      last.date =  as.Date(sapply(l.out, function(x) x[4])))
 
     } else {
       # empty df
       df.cache.files <-  dplyr::tibble(f.name = '',
-                                           ticker = '',
-                                           src =  '',
-                                           first.date =  first.date,
-                                           last.date =  last.date)
+                                       ticker = '',
+                                       src =  '',
+                                       first.date =  first.date,
+                                       last.date =  last.date)
 
     }
 
@@ -86,7 +90,10 @@ myGetSymbols <- function(ticker,
       df.cache <- data.frame()
       flag.dates <- TRUE
 
-      cat(' | Found cache file')
+      if (!be.quiet) {
+        message(' | Found cache file', appendLF = FALSE )
+      }
+
       df.cache <- readRDS(temp.cache$f.name)
 
       # check if data matches
@@ -98,7 +105,9 @@ myGetSymbols <- function(ticker,
       df.out <- data.frame()
       if (flag.dates) {
 
-        cat(' | Need new data')
+        if (!be.quiet) {
+          message(' | Need new data', appendLF = FALSE )
+        }
 
         flag.date.bef <- ((first.date -  temp.cache$first.date) < - max.diff.dates )
         df.out.bef <- data.frame()
@@ -148,7 +157,9 @@ myGetSymbols <- function(ticker,
                               ref.date <= last.date)
 
     } else {
-      cat(' | Not Cached')
+      if (!be.quiet) {
+        message(' | Not Cached', appendLF = FALSE )
+      }
 
       my.f.out <- paste0(fixed.ticker, '_',
                          src, '_',
@@ -162,7 +173,9 @@ myGetSymbols <- function(ticker,
 
       # only saves if there is data
       if (nrow(df.out) > 1) {
-        cat(' | Saving cache')
+        if (!be.quiet) {
+          message(' | Saving cache', appendLF = FALSE )
+        }
         saveRDS(df.out, file = file.path(cache.folder, my.f.out))
       }
     }
@@ -182,7 +195,9 @@ myGetSymbols <- function(ticker,
     threshold.decision = 'OUT'
 
     df.out <- data.frame()
-    cat(' - Error in download..')
+    if (!be.quiet) {
+      message(' - Error in download..', appendLF = FALSE )
+    }
   } else {
 
     # control for returning data when importing bench ticker
@@ -206,13 +221,16 @@ myGetSymbols <- function(ticker,
                       'Feliz que nem lambari de sanga!',
                       'Mais faceiro que guri de bombacha nova!')
 
-    if (threshold.decision == 'KEEP') {
-      cat(paste0(' - ', 'Got ', scales::percent(perc.benchmark.dates), ' of valid prices | ',
-                 sample(morale.boost, 1)))
-    } else {
-      cat(paste0(' - ', 'Got ', scales::percent(perc.benchmark.dates), ' of valid prices | ',
-                 'OUT: not enough data (thresh.bad.data = ', scales::percent(thresh.bad.data), ')'))
+    if (!be.quiet) {
+      if (threshold.decision == 'KEEP') {
+        message(paste0(' - ', 'Got ', scales::percent(perc.benchmark.dates), ' of valid prices | ',
+                       sample(morale.boost, 1)), appendLF = FALSE )
+      } else {
+        message(paste0(' - ', 'Got ', scales::percent(perc.benchmark.dates), ' of valid prices | ',
+                       'OUT: not enough data (thresh.bad.data = ', scales::percent(thresh.bad.data), ')'),
+                appendLF = FALSE )
 
+      }
     }
 
     df.control <- tibble::tibble(ticker=ticker,

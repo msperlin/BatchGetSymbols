@@ -23,6 +23,7 @@
 #' @param do.cache Use caching system? (default = TRUE)
 #' @param cache.folder Where to save cache files? (default = 'BGS_Cache')
 #' @param do.parallel Flag for using parallel or not (default = FALSE). Before using parallel, make sure you call function future::plan() first.
+#' @param be.quiet Logical for printing statements (default = FALSE)
 #' @return A list with the following items: \describe{
 #' \item{df.control }{A dataframe containing the results of the download process for each asset}
 #' \item{df.tickers}{A dataframe with the financial data for all valid tickers} }
@@ -54,7 +55,8 @@ BatchGetSymbols <- function(tickers,
                             do.fill.missing.prices = TRUE,
                             do.cache = TRUE,
                             cache.folder = 'BGS_Cache',
-                            do.parallel = FALSE) {
+                            do.parallel = FALSE,
+                            be.quiet = FALSE) {
   # check for internet
   test.internet <- curl::has_internet()
   if (!test.internet) {
@@ -133,10 +135,11 @@ BatchGetSymbols <- function(tickers,
 
   # first screen msgs
 
-  cat('\nRunning BatchGetSymbols for:')
-  cat('\n   tickers =', paste0(tickers, collapse = ', '))
-  cat('\n   Downloading data for benchmark ticker')
-
+  if (!be.quiet) {
+    message('\nRunning BatchGetSymbols for:', appendLF = FALSE )
+    message('\n   tickers =', paste0(tickers, collapse = ', '), appendLF = FALSE )
+    message('\n   Downloading data for benchmark ticker', appendLF = FALSE )
+  }
 
   # detect if bench.src is google or yahoo (google tickers have : in their name)
   bench.src <- ifelse(stringr::str_detect(bench.ticker,':'),'google','yahoo')
@@ -148,7 +151,8 @@ BatchGetSymbols <- function(tickers,
                            first.date = first.date,
                            last.date = last.date,
                            do.cache = do.cache,
-                           cache.folder = cache.folder)
+                           cache.folder = cache.folder,
+                           be.quiet = be.quiet)
 
   # run fetching function for all tickers
 
@@ -161,15 +165,15 @@ BatchGetSymbols <- function(tickers,
                  do.cache = do.cache,
                  cache.folder = cache.folder,
                  df.bench = rep(list(df.bench), length(tickers)),
-                 thresh.bad.data = thresh.bad.data)
+                 thresh.bad.data = thresh.bad.data,
+                 be.quiet =  be.quiet)
 
   if (!do.parallel) {
 
-  my.l <- purrr::pmap(.l = l.args,
-                      .f = myGetSymbols)
+    my.l <- purrr::pmap(.l = l.args,
+                        .f = myGetSymbols)
 
   } else {
-
 
     # find number of used cores
     formals.parallel <- formals(future::plan())
@@ -177,9 +181,12 @@ BatchGetSymbols <- function(tickers,
 
     available.cores <- future::availableCores()
 
-    cat(paste0('\nRunning parallel BatchGetSymbols with ', used.workers, ' cores (',
-               available.cores, ' available)'))
-    cat('\n\n')
+    if (!be.quiet) {
+      message(paste0('\nRunning parallel BatchGetSymbols with ', used.workers, ' cores (',
+                     available.cores, ' available)'), appendLF = FALSE )
+      message('\n\n', appendLF = FALSE )
+    }
+
 
     # test if plan() was called
     msg <- utils::capture.output(future::plan())

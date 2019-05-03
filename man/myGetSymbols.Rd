@@ -6,7 +6,7 @@
 \usage{
 myGetSymbols(ticker, i.ticker, length.tickers, src = "yahoo", first.date,
   last.date, do.cache = TRUE, cache.folder = file.path(tempdir(),
-  "BGS_Cache"), df.bench = NULL, thresh.bad.data)
+  "BGS_Cache"), df.bench = NULL, be.quiet = FALSE, thresh.bad.data)
 }
 \arguments{
 \item{ticker}{A single ticker to download data}
@@ -26,6 +26,8 @@ myGetSymbols(ticker, i.ticker, length.tickers, src = "yahoo", first.date,
 \item{cache.folder}{Where to save cache files? (default = 'BGS_Cache')}
 
 \item{df.bench}{Data for bechmark ticker}
+
+\item{be.quiet}{Logical for printing statements (default = FALSE)}
 
 \item{thresh.bad.data}{A percentage threshold for defining bad data. The dates of the benchmark ticker are compared to each asset. If the percentage of non-missing dates
 with respect to the benchmark ticker is lower than thresh.bad.data, the function will ignore the asset (default = 0.75)}

@@ -8,7 +8,8 @@ BatchGetSymbols(tickers, first.date = Sys.Date() - 30,
   last.date = Sys.Date(), thresh.bad.data = 0.75,
   bench.ticker = "^GSPC", type.return = "arit", freq.data = "daily",
   do.complete.data = FALSE, do.fill.missing.prices = TRUE,
-  do.cache = TRUE, cache.folder = "BGS_Cache", do.parallel = FALSE)
+  do.cache = TRUE, cache.folder = "BGS_Cache", do.parallel = FALSE,
+  be.quiet = FALSE)
 }
 \arguments{
 \item{tickers}{A vector of tickers. If not sure whether the ticker is available, check the websites of google and yahoo finance. The source for downloading
@@ -36,6 +37,8 @@ with respect to the benchmark ticker is lower than thresh.bad.data, the function
 \item{cache.folder}{Where to save cache files? (default = 'BGS_Cache')}
 
 \item{do.parallel}{Flag for using parallel or not (default = FALSE). Before using parallel, make sure you call function future::plan() first.}
+
+\item{be.quiet}{Logical for printing statements (default = FALSE)}
 }
 \value{
 A list with the following items: \describe{
