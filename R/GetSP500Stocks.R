@@ -39,7 +39,7 @@ GetSP500Stocks <- function(do.cache = TRUE,
 
   df.SP500Stocks <- df.SP500Stocks[[1]]
 
-  colnames(df.SP500Stocks) <- c('company','tickers','SEC.filings','GICS.Sector',
+  colnames(df.SP500Stocks) <- c('tickers','company','SEC.filings','GICS.Sector',
                                 'GICS.Sub.Industry','Address','Date.first.added','CIK', 'Founded')
 
   if (do.cache) {
