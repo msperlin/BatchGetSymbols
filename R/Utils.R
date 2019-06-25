@@ -54,7 +54,7 @@ get.clean.data <- function(tickers,
 
   if (nrow(df.out) == 0) return(df.out)
 
-  df.out <- as.data.frame(df.out)
+  df.out <- as.data.frame(df.out[!duplicated(index(df.out))])
 
   # adjust df for difference of columns from yahoo and google
   if (src=='google'){
