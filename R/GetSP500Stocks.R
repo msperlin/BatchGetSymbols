@@ -27,7 +27,7 @@ GetSP500Stocks <- function(do.cache = TRUE,
     }
   }
 
-  my.url <- 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
+    my.url <- 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
 
   read_html <- 0 # fix for global variable nagging from BUILD
   my.xpath <- '//*[@id="constituents"]'
