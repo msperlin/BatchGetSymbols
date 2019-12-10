@@ -1,3 +1,7 @@
+## Version 2.5.5 (2019-12-10)
+
+- Fixed bug in cleaning function
+
 ## Version 2.5.4  (2019-10-12)
 
 - Fixed small bug in vignette
