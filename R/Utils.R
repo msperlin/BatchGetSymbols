@@ -176,6 +176,8 @@ df.fill.na = function(df.in) {
   cols.to.adjust <- c("price.open", "price.high", "price.low",
                       "price.close", "price.adjusted")
 
+  print(unique(df.in$ticker))
+
   cols.to.adjust <- cols.to.adjust[cols.to.adjust %in% names(df.in)]
 
   # function for finding closest price
@@ -185,7 +187,7 @@ df.fill.na = function(df.in) {
 
     my.dist <- x - vec.comp
     my.dist <- my.dist[my.dist > 0]
-    idx <- which.min(my.dist)
+    idx <- which.min(my.dist)[1]
 
     return(vec.comp[idx])
 
@@ -196,7 +198,7 @@ df.fill.na = function(df.in) {
     # adjust for NA by replacing values
     idx.to.use <- sapply(idx.na,
                          fct.find.min.dist,
-                         vec.comp = idx.not.na )
+                         vec.comp = idx.not.na)
 
     df.in[idx.na, i.col] <- unlist(df.in[idx.to.use, i.col])
 
