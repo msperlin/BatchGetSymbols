@@ -4,9 +4,19 @@
 \alias{myGetSymbols}
 \title{An improved version of function \code{\link[quantmod]{getSymbols}} from quantmod}
 \usage{
-myGetSymbols(ticker, i.ticker, length.tickers, src = "yahoo", first.date,
-  last.date, do.cache = TRUE, cache.folder = file.path(tempdir(),
-  "BGS_Cache"), df.bench = NULL, be.quiet = FALSE, thresh.bad.data)
+myGetSymbols(
+  ticker,
+  i.ticker,
+  length.tickers,
+  src = "yahoo",
+  first.date,
+  last.date,
+  do.cache = TRUE,
+  cache.folder = file.path(tempdir(), "BGS_Cache"),
+  df.bench = NULL,
+  be.quiet = FALSE,
+  thresh.bad.data
+)
 }
 \arguments{
 \item{ticker}{A single ticker to download data}

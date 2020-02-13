@@ -4,12 +4,21 @@
 \alias{BatchGetSymbols}
 \title{Function to download financial data}
 \usage{
-BatchGetSymbols(tickers, first.date = Sys.Date() - 30,
-  last.date = Sys.Date(), thresh.bad.data = 0.75,
-  bench.ticker = "^GSPC", type.return = "arit", freq.data = "daily",
-  do.complete.data = FALSE, do.fill.missing.prices = TRUE,
-  do.cache = TRUE, cache.folder = "BGS_Cache", do.parallel = FALSE,
-  be.quiet = FALSE)
+BatchGetSymbols(
+  tickers,
+  first.date = Sys.Date() - 30,
+  last.date = Sys.Date(),
+  thresh.bad.data = 0.75,
+  bench.ticker = "^GSPC",
+  type.return = "arit",
+  freq.data = "daily",
+  do.complete.data = FALSE,
+  do.fill.missing.prices = TRUE,
+  do.cache = TRUE,
+  cache.folder = "BGS_Cache",
+  do.parallel = FALSE,
+  be.quiet = FALSE
+)
 }
 \arguments{
 \item{tickers}{A vector of tickers. If not sure whether the ticker is available, check the websites of google and yahoo finance. The source for downloading

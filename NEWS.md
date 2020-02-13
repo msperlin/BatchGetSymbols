@@ -1,6 +1,7 @@
 ## Version 2.5.5 (2019-12-10)
 
 - Fixed bug in cleaning function
+- Added startup message for 2020 book
 
 ## Version 2.5.4  (2019-10-12)
 
