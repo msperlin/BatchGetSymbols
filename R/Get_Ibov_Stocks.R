@@ -1,6 +1,6 @@
 #' Function to download the current components of the Ibovespa index from Bovespa website
 #'
-#' This function scrapes the stocks that constitute the SP500 index from the wikipedia page at http://bvmf.bmfbovespa.com.br/indices/ResumoCarteiraTeorica.aspx?Indice=IBOV&idioma=pt-br.
+#' This function scrapes the stocks that constitute the Ibovespa index from the wikipedia page at http://bvmf.bmfbovespa.com.br/indices/ResumoCarteiraTeorica.aspx?Indice=IBOV&idioma=pt-br.
 #'
 #' @param max.tries Maximum number of attempts to download the data
 #' @inheritParams BatchGetSymbols
