@@ -215,16 +215,19 @@ df.fill.na = function(df.in) {
 
 .onAttach <- function(libname,pkgname) {
 
-  do_color <- crayon::make_style("#18bc9c")
+  do_color <- crayon::make_style("#002EFF")
+  do_color_title <- crayon::make_style('#FF4141')
 
   if (interactive()) {
-    msg <- paste0('\nHi ', Sys.getenv('USER'), '!\n',
-                  'Want to learn more about using R in Finance and Economics? ',
-                  'The second edition (2020) of my R book is freely available at ',
+    msg <- paste0('\n\nHi ', Sys.getenv('USER'), '!\n',
+                  'Want to learn more about BatchGetSymbols and other R packages for Finance and Economics?',
+                  '\nThe second edition (2020) of ',
+                  do_color_title('Analyzing Financial and Economic Data with R'), ' is available at\n',
                   do_color('https://www.msperlin.com/afedR/') )
   } else {
     msg <- ''
   }
+
   packageStartupMessage(msg)
 
 }
