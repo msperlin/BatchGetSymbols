@@ -17,7 +17,7 @@ GetIbovStocks(do.cache = TRUE, cache.folder = "BGS_Cache", max.tries = 10)
 A dataframe that includes a column with the list of tickers of companies that belong to the Ibovespa index
 }
 \description{
-This function scrapes the stocks that constitute tSP500 index from the wikipedia page at http://bvmf.bmfbovespa.com.br/indices/ResumoCarteiraTeorica.aspx?Indice=IBOV&idioma=pt-br.
+This function scrapes the stocks that constitute the Ibovespa index from the wikipedia page at http://bvmf.bmfbovespa.com.br/indices/ResumoCarteiraTeorica.aspx?Indice=IBOV&idioma=pt-br.
 }
 \examples{
 \dontrun{

@@ -212,17 +212,16 @@ df.fill.na = function(df.in) {
 }
 
 
-
 .onAttach <- function(libname,pkgname) {
 
-  do_color <- crayon::make_style("#002EFF")
-  do_color_title <- crayon::make_style('#FF4141')
+  do_color <- crayon::make_style("#FF4141")
+  this_pkg <- 'BatchGetSymbols'
 
   if (interactive()) {
-    msg <- paste0('\n\nHi ', Sys.getenv('USER'), '!\n',
-                  'Want to learn more about BatchGetSymbols and other R packages for Finance and Economics?',
+    msg <- paste0('\nWant to learn more about ',
+                  do_color(this_pkg), ' and other R packages for Finance and Economics?',
                   '\nThe second edition (2020) of ',
-                  do_color_title('Analyzing Financial and Economic Data with R'), ' is available at\n',
+                  do_color('Analyzing Financial and Economic Data with R'), ' is available at\n',
                   do_color('https://www.msperlin.com/afedR/') )
   } else {
     msg <- ''
