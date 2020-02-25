@@ -1,9 +1,9 @@
 Package: BatchGetSymbols
 Title: Downloads and Organizes Financial Data for Multiple Tickers
-Version: 2.5.5
+Version: 2.5.6
 Authors@R: person("Marcelo", "Perlin", email = "marceloperlin@gmail.com", role = c("aut", "cre"))
 Description: Makes it easy to download a large number of trade data from Yahoo Finance <https://finance.yahoo.com/>.
-Date: 2020-02-13
+Date: 2020-02-25
 Depends:
     R (>= 3.4.0), rvest, dplyr
 Imports: stringr, curl, quantmod, XML, tidyr, 
