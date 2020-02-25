@@ -1,4 +1,8 @@
-## Version 2.5.5 (2019-12-10)
+## Version 2.5.6 (2020-02-25)
+
+- Improved startup message for 2020 book (link to online version)
+
+## Version 2.5.5 (2019-02-17)
 
 - Fixed bug in cleaning function
 - Added startup message for 2020 book
