@@ -1,3 +1,7 @@
+## Version 2.5.X (2020-0X-XX)
+
+- Fixed bug in sp500 fct
+
 ## Version 2.5.6 (2020-02-25)
 
 - Improved startup message for 2020 book (link to online version)
