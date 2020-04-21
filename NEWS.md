@@ -1,6 +1,7 @@
-## Version 2.5.X (2020-0X-XX)
+## Version 2.5.7 (2020-04-21)
 
 - Fixed bug in sp500 fct
+- Fixed bug with repeated rows of data ([git issue 16](https://github.com/msperlin/BatchGetSymbols/issues/16))
 
 ## Version 2.5.6 (2020-02-25)
 

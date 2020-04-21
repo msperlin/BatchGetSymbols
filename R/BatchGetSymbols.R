@@ -270,6 +270,10 @@ BatchGetSymbols <- function(tickers,
                                              df.tickers$ticker,
                                              type.return)
 
+  # fix for issue with repeated rows (see git issue 16)
+  # https://github.com/msperlin/BatchGetSymbols/issues/16
+  df.tickers = unique(df.tickers)
+
   my.l <- list(df.control = df.control,
                df.tickers = df.tickers)
 
