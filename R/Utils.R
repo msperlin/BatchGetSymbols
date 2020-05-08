@@ -74,6 +74,10 @@ get.clean.data <- function(tickers,
   # remove rownames
   rownames(df.out) <- NULL
 
+  # remove rows with NA
+  idx <- !is.na(df.out$price.adjusted)
+  df.out <- df.out[idx, ]
+
   if (nrow(df.out) ==0) return('Error in download')
 
   return(df.out)

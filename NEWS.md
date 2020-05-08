@@ -1,3 +1,7 @@
+## Version 2.5.8 (2020-05-08)
+
+- Fixed bug in NA price
+
 ## Version 2.5.7 (2020-04-21)
 
 - Fixed bug in sp500 fct
