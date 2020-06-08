@@ -119,7 +119,8 @@ BatchGetSymbols <- function(tickers,
   tickers.src <- ifelse(stringr::str_detect(tickers,':'),'google','yahoo')
 
   if (any(tickers.src == 'google')) {
-    my.msg <- 'Google is no longer providing price data. You should be using YFinance'
+    my.msg <- 'Google is no longer providing price data.
+    You should be using tickers from YFinance'
     stop(my.msg)
   }
 
