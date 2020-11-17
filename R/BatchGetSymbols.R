@@ -16,7 +16,9 @@
 #' @param bench.ticker The ticker of the benchmark asset used to compare dates. My suggestion is to use the main stock index of the market from where the data is coming from (default = ^GSPC (SP500, US market))
 #' @param type.return Type of price return to calculate: 'arit' (default) - aritmetic, 'log' - log returns.
 #' @param freq.data Frequency of financial data ('daily', 'weekly', 'monthly', 'yearly')
-#' @param how.to.aggregate defines whether to aggregate the data using the first observations of the period or last ('first', 'last')
+#' @param how.to.aggregate Defines whether to aggregate the data using the first observations of the aggregating period or last ('first', 'last').
+#'  For example, if freq.data = 'yearly' and how.to.aggregate = 'last', the last available day of the year will be used for all
+#'  aggregated values such as price.adjusted.
 #' @param thresh.bad.data A percentage threshold for defining bad data. The dates of the benchmark ticker are compared to each asset. If the percentage of non-missing dates
 #'  with respect to the benchmark ticker is lower than thresh.bad.data, the function will ignore the asset (default = 0.75)
 #' @param do.complete.data Return a complete/balanced dataset? If TRUE, all missing pairs of ticker-date will be replaced by NA or closest price (see input do.fill.missing.prices). Default = FALSE.
@@ -52,7 +54,7 @@ BatchGetSymbols <- function(tickers,
                             bench.ticker = '^GSPC',
                             type.return = 'arit',
                             freq.data = 'daily',
-                            how.to.aggregate = 'first',
+                            how.to.aggregate = 'last',
                             do.complete.data = FALSE,
                             do.fill.missing.prices = TRUE,
                             do.cache = TRUE,
@@ -255,9 +257,18 @@ BatchGetSymbols <- function(tickers,
     first_idx <- min(which(temp_weekdays == 1))
     first_monday <- temp_dates[first_idx]
 
-    week.vec <- seq(first_monday,
-                    as.Date(paste0(lubridate::year(max(df.tickers$ref.date))+1, '-12-31')),
-                    by = str.freq)
+    if (freq.data == 'weekly') {
+      # make sure it starts on a monday
+      week.vec <- seq(first_monday,
+                      as.Date(paste0(lubridate::year(max(df.tickers$ref.date))+1, '-12-31')),
+                      by = str.freq)
+    } else {
+      # every other case
+      week.vec <- seq(as.Date(paste0(lubridate::year(min(df.tickers$ref.date)), '-01-01')),
+                      as.Date(paste0(lubridate::year(max(df.tickers$ref.date))+1, '-12-31')),
+                      by = str.freq)
+    }
+
 
     df.tickers$time.groups <- cut(x = df.tickers$ref.date, breaks = week.vec, right = FALSE)
 
