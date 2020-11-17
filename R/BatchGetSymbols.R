@@ -16,6 +16,7 @@
 #' @param bench.ticker The ticker of the benchmark asset used to compare dates. My suggestion is to use the main stock index of the market from where the data is coming from (default = ^GSPC (SP500, US market))
 #' @param type.return Type of price return to calculate: 'arit' (default) - aritmetic, 'log' - log returns.
 #' @param freq.data Frequency of financial data ('daily', 'weekly', 'monthly', 'yearly')
+#' @param how.to.aggregate defines whether to aggregate the data using the first observations of the period or last ('first', 'last')
 #' @param thresh.bad.data A percentage threshold for defining bad data. The dates of the benchmark ticker are compared to each asset. If the percentage of non-missing dates
 #'  with respect to the benchmark ticker is lower than thresh.bad.data, the function will ignore the asset (default = 0.75)
 #' @param do.complete.data Return a complete/balanced dataset? If TRUE, all missing pairs of ticker-date will be replaced by NA or closest price (see input do.fill.missing.prices). Default = FALSE.
@@ -51,6 +52,7 @@ BatchGetSymbols <- function(tickers,
                             bench.ticker = '^GSPC',
                             type.return = 'arit',
                             freq.data = 'daily',
+                            how.to.aggregate = 'first',
                             do.complete.data = FALSE,
                             do.fill.missing.prices = TRUE,
                             do.cache = TRUE,
@@ -70,6 +72,11 @@ BatchGetSymbols <- function(tickers,
   possible.values <- c('arit', 'log')
   if (!any(type.return %in% possible.values)) {
     stop(paste0('Input type.ret should be one of:\n\n', paste0(possible.values, collapse = '\n')))
+  }
+
+  possible.values <- c('first', 'last')
+  if (!any(how.to.aggregate %in% possible.values)) {
+    stop(paste0('Input how.to.aggregate should be one of:\n\n', paste0(possible.values, collapse = '\n')))
   }
 
   # check for NA
@@ -238,7 +245,17 @@ BatchGetSymbols <- function(tickers,
                        'monthly' = '1 month',
                        'yearly' = '1 year')
 
-    week.vec <- seq(as.Date(paste0(lubridate::year(min(df.tickers$ref.date)), '-01-01')),
+    # find the first monday (see issue #19)
+    # https://github.com/msperlin/BatchGetSymbols/issues/19
+    temp_dates <- seq(as.Date(paste0(lubridate::year(min(df.tickers$ref.date)), '-01-01')),
+                      as.Date(paste0(lubridate::year(max(df.tickers$ref.date))+1, '-12-31')),
+                      by = '1 day')
+
+    temp_weekdays <- lubridate::wday(temp_dates, week_start = 1)
+    first_idx <- min(which(temp_weekdays == 1))
+    first_monday <- temp_dates[first_idx]
+
+    week.vec <- seq(first_monday,
                     as.Date(paste0(lubridate::year(max(df.tickers$ref.date))+1, '-12-31')),
                     by = str.freq)
 
@@ -246,18 +263,34 @@ BatchGetSymbols <- function(tickers,
 
     # set NULL vars for CRAN check: "no visible binding..."
     time.groups <- volume <- price.open <- price.close <- price.adjusted <- NULL
+    price.high <- price.low <- NULL
 
-    df.tickers <- df.tickers %>%
-      group_by(time.groups, ticker) %>%
-      summarise(ref.date = min(ref.date),
-                volume = sum(volume, na.rm = TRUE),
-                price.open = first(price.open),
-                price.high = max(price.close),
-                price.low = min(price.close),
-                price.close = first(price.close),
-                price.adjusted = first(price.adjusted)) %>%
-      #select(-time.groups) %>%
-      arrange(ticker, ref.date)
+    if (how.to.aggregate == 'first') {
+      df.tickers <- df.tickers %>%
+        group_by(time.groups, ticker) %>%
+        summarise(ref.date = min(ref.date),
+                  volume = sum(volume, na.rm = TRUE),
+                  price.open = first(price.open),
+                  price.high = max(price.high),
+                  price.low = min(price.low),
+                  price.close = first(price.close),
+                  price.adjusted = first(price.adjusted)) %>%
+        #select(-time.groups) %>%
+        arrange(ticker, ref.date)
+    } else if (how.to.aggregate == 'last') {
+      df.tickers <- df.tickers %>%
+        group_by(time.groups, ticker) %>%
+        summarise(ref.date = min(ref.date),
+                  volume = sum(volume, na.rm = TRUE),
+                  price.open = first(price.open),
+                  price.high = max(price.high),
+                  price.low = min(price.low),
+                  price.close = last(price.close),
+                  price.adjusted = last(price.adjusted)) %>%
+        #select(-time.groups) %>%
+        arrange(ticker, ref.date)
+    }
+
 
     df.tickers$time.groups <- NULL
   }

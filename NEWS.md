@@ -1,7 +1,8 @@
 ## Version 2.5.9 (2020-11-17)
 
 - removed rownames from output ([issue 18](https://github.com/msperlin/BatchGetSymbols/issues/18))
-- Fixed bug in NA price
+- Made sure that, on "weekly" mode, the first day of week is a monday ([issue 19](https://github.com/msperlin/BatchGetSymbols/issues/19))
+- Added input how.to.aggregate that will allow the user to aggregate de data by the last or first prices of intervals ([issue 19](https://github.com/msperlin/BatchGetSymbols/issues/19))
 
 ## Version 2.5.8 (2020-05-08)
 

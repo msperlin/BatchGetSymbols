@@ -12,6 +12,7 @@ BatchGetSymbols(
   bench.ticker = "^GSPC",
   type.return = "arit",
   freq.data = "daily",
+  how.to.aggregate = "first",
   do.complete.data = FALSE,
   do.fill.missing.prices = TRUE,
   do.cache = TRUE,
@@ -36,6 +37,8 @@ with respect to the benchmark ticker is lower than thresh.bad.data, the function
 \item{type.return}{Type of price return to calculate: 'arit' (default) - aritmetic, 'log' - log returns.}
 
 \item{freq.data}{Frequency of financial data ('daily', 'weekly', 'monthly', 'yearly')}
+
+\item{how.to.aggregate}{defines whether to aggregate the data using the first observations of the period or last ('first', 'last')}
 
 \item{do.complete.data}{Return a complete/balanced dataset? If TRUE, all missing pairs of ticker-date will be replaced by NA or closest price (see input do.fill.missing.prices). Default = FALSE.}
 
