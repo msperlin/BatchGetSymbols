@@ -1,3 +1,8 @@
+## Version 2.5.9 (2020-11-17)
+
+- removed rownames from output ([issue 18](https://github.com/msperlin/BatchGetSymbols/issues/18))
+- Fixed bug in NA price
+
 ## Version 2.5.8 (2020-05-08)
 
 - Fixed bug in NA price

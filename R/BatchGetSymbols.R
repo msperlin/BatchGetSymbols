@@ -275,6 +275,10 @@ BatchGetSymbols <- function(tickers,
   # https://github.com/msperlin/BatchGetSymbols/issues/16
   df.tickers = unique(df.tickers)
 
+  # remove rownames from output (see git issue #18)
+  # https://github.com/msperlin/BatchGetSymbols/issues/18
+  rownames(df.tickers) <- NULL
+
   my.l <- list(df.control = df.control,
                df.tickers = df.tickers)
 
