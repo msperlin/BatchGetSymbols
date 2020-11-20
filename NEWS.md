@@ -1,3 +1,7 @@
+## Version 2.6 (2020-11-20)
+
+- cache dir is now file.path(tempdir(), 'BGS_Cache'). This solves the problem with mismatching price series from cached data between splits or dividends.
+
 ## Version 2.5.9 (2020-11-17)
 
 - removed rownames from output ([issue 18](https://github.com/msperlin/BatchGetSymbols/issues/18))

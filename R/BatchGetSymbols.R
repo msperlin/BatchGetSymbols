@@ -58,9 +58,11 @@ BatchGetSymbols <- function(tickers,
                             do.complete.data = FALSE,
                             do.fill.missing.prices = TRUE,
                             do.cache = TRUE,
-                            cache.folder = 'BGS_Cache',
+                            cache.folder = file.path(tempdir(),
+                                                     'BGS_Cache'),
                             do.parallel = FALSE,
                             be.quiet = FALSE) {
+
   # check for internet
   test.internet <- curl::has_internet()
   if (!test.internet) {
