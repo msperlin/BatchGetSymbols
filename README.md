@@ -2,21 +2,24 @@
 
 [![](https://cranlogs.r-pkg.org/badges/BatchGetSymbols)](https://CRAN.R-project.org/package=BatchGetSymbols)
 
-One of the great things of working in finance is that financial datasets from capital markets are freely available from sources such as Yahoo Finance. This is an excelent feature for building up to date content for classes and conducting academic research. 
+BatchGetSymbols is a R package for large-scale download of financial data from Yahoo Finance. Based on a set of tickers and date ranges, the package will download and organize the financial data in the tidy/long format.
 
-In the past I have used function GetSymbols from the CRAN package [quantmod](https://CRAN.R-project.org/package=quantmod) in order to download end of day trade data for several stocks in the financial market. The problem in using GetSymbols is that it does not aggregate or clean the financial data for several tickers. In the usage of GetSymbols, each stock will have its own `xts` object with different column names and this makes it harder to store data from several tickers in a single dataframe. 
+## Warnings
 
-Package BatchGetSymbols is my solution to this problem. Based on a list of tickers and a time period, BatchGetSymbols will download price data from yahoo finance and organize it so that you don't need to worry about cleaning it up yourself. 
+- Yahoo finance data is far from perfect or reliable, specially for individual stocks. In my experience, using it for research code with stock **indices** is fine and I can match it with other data sources. But, adjusted stock prices for **individual assets** is messy as stock events such as splits or dividends are not properly registered. I was never able to match it with other data sources. My advice is to never use the data of individual stocks in production. 
+
+- Since version 2.6, the cache system is session-persistent by default, meaning that whenever you restart your R session, you lose all your cached data. This is a safety feature for mismatching prices due to corporate events.
 
 ## Main features:
 
-- Organizes data in a tabular/long or wide format, returning prices and returns
-- A cache system was implemented in version 2.0, meaning that the data is saved locally and only missings portions of the data are downloaded, if needed. 
-- All dates are compared to a benchmark ticker such as SP500. You can choose to ignore ticker with a high number of missing dates.
-- User can choose a complete/balanced dataset output. The package uses a benchmark ticker for date comparison (e.g. SP500 - ^GSPC). Days with missing prices and traded volume equal to zero are found and prices are either set to NA or replaced by closest available value.
+- Organizes data in a tabular/long or wide format, returning prices and returns (arithmetic or logarithmic)
+- A session-persistent cache system was implemented in version 2.0, meaning that the data is saved locally and only missing portions of the data are downloaded, if needed.
+- All dates are compared to a benchmark ticker such as SP500 and, whenever an individual asset does not have a sufficient number of dates, the software drops it from the output. This means you can choose to ignore tickers with high number of missing dates.
 - Allows the choice for the wide format, with tickers as columns
 - Users can choose the frequency of the resulting dataset (daily, weekly, monthly, yearly)
 - Option for parallel computing, speeding up the data importation process
+
+
 
 ## Installation
 

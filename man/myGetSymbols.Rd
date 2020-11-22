@@ -31,9 +31,9 @@ myGetSymbols(
 
 \item{last.date}{The last date to download data (date or char as YYYY-MM-DD)}
 
-\item{do.cache}{Use caching system? (default = TRUE)}
+\item{do.cache}{Use cache system? (default = TRUE)}
 
-\item{cache.folder}{Where to save cache files? (default = 'BGS_Cache')}
+\item{cache.folder}{Where to save cache files? (default = file.path(tempdir(), 'BGS_Cache') )}
 
 \item{df.bench}{Data for bechmark ticker}
 

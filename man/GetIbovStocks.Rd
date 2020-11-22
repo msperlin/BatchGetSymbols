@@ -7,9 +7,9 @@
 GetIbovStocks(do.cache = TRUE, cache.folder = "BGS_Cache", max.tries = 10)
 }
 \arguments{
-\item{do.cache}{Use caching system? (default = TRUE)}
+\item{do.cache}{Use cache system? (default = TRUE)}
 
-\item{cache.folder}{Where to save cache files? (default = 'BGS_Cache')}
+\item{cache.folder}{Where to save cache files? (default = file.path(tempdir(), 'BGS_Cache') )}
 
 \item{max.tries}{Maximum number of attempts to download the data}
 }

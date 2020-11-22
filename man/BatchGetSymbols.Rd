@@ -12,11 +12,11 @@ BatchGetSymbols(
   bench.ticker = "^GSPC",
   type.return = "arit",
   freq.data = "daily",
-  how.to.aggregate = "first",
+  how.to.aggregate = "last",
   do.complete.data = FALSE,
   do.fill.missing.prices = TRUE,
   do.cache = TRUE,
-  cache.folder = "BGS_Cache",
+  cache.folder = file.path(tempdir(), "BGS_Cache"),
   do.parallel = FALSE,
   be.quiet = FALSE
 )
@@ -38,15 +38,17 @@ with respect to the benchmark ticker is lower than thresh.bad.data, the function
 
 \item{freq.data}{Frequency of financial data ('daily', 'weekly', 'monthly', 'yearly')}
 
-\item{how.to.aggregate}{defines whether to aggregate the data using the first observations of the period or last ('first', 'last')}
+\item{how.to.aggregate}{Defines whether to aggregate the data using the first observations of the aggregating period or last ('first', 'last').
+For example, if freq.data = 'yearly' and how.to.aggregate = 'last', the last available day of the year will be used for all
+aggregated values such as price.adjusted.}
 
 \item{do.complete.data}{Return a complete/balanced dataset? If TRUE, all missing pairs of ticker-date will be replaced by NA or closest price (see input do.fill.missing.prices). Default = FALSE.}
 
 \item{do.fill.missing.prices}{Finds all missing prices and replaces them by their closest price with preference for the previous price. This ensures a balanced dataset for all assets, without any NA. Default = TRUE.}
 
-\item{do.cache}{Use caching system? (default = TRUE)}
+\item{do.cache}{Use cache system? (default = TRUE)}
 
-\item{cache.folder}{Where to save cache files? (default = 'BGS_Cache')}
+\item{cache.folder}{Where to save cache files? (default = file.path(tempdir(), 'BGS_Cache') )}
 
 \item{do.parallel}{Flag for using parallel or not (default = FALSE). Before using parallel, make sure you call function future::plan() first.}
 
@@ -58,15 +60,19 @@ A list with the following items: \describe{
 \item{df.tickers}{A dataframe with the financial data for all valid tickers} }
 }
 \description{
-This function is designed to make batch downloads of financial data using \code{\link[quantmod]{getSymbols}}.
+This function downloads financial data from Yahoo Finance using \code{\link[quantmod]{getSymbols}}.
 Based on a set of tickers and a time period, the function will download the data for each ticker and return a report of the process, along with the actual data in the long dataframe format.
 The main advantage of the function is that it automatically recognizes the source of the dataset from the ticker and structures the resulting data from different sources in the long format.
-A caching system is also presente, making it very fast.
+A caching system is also available, making it very fast.
 }
 \section{Warning}{
 
 
-Do notice that adjusted prices are not available from google finance. When using this source, the function will output NA values for this column.
+Do notice that since 2019, adjusted prices are no longer available from google finance.
+When using this source, the function will output NA values for this column.
+
+Also, be aware that when using cache system in a local folder (and not the default tempdir()), the aggregate prices series might not match if
+a split or dividends event happens in between cache files.
 }
 
 \examples{

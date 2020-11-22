@@ -1,13 +1,17 @@
 #' Function to download financial data
 #'
-#' This function is designed to make batch downloads of financial data using \code{\link[quantmod]{getSymbols}}.
+#' This function downloads financial data from Yahoo Finance using \code{\link[quantmod]{getSymbols}}.
 #' Based on a set of tickers and a time period, the function will download the data for each ticker and return a report of the process, along with the actual data in the long dataframe format.
 #' The main advantage of the function is that it automatically recognizes the source of the dataset from the ticker and structures the resulting data from different sources in the long format.
-#' A caching system is also presente, making it very fast.
+#' A caching system is also available, making it very fast.
 #'
 #' @section Warning:
 #'
-#' Do notice that adjusted prices are not available from google finance. When using this source, the function will output NA values for this column.
+#' Do notice that since 2019, adjusted prices are no longer available from google finance.
+#' When using this source, the function will output NA values for this column.
+#'
+#' Also, be aware that when using cache system in a local folder (and not the default tempdir()), the aggregate prices series might not match if
+#' a split or dividends event happens in between cache files.
 #'
 #' @param tickers A vector of tickers. If not sure whether the ticker is available, check the websites of google and yahoo finance. The source for downloading
 #'  the data can either be Google or Yahoo. The function automatically selects the source webpage based on the input ticker.
@@ -23,8 +27,8 @@
 #'  with respect to the benchmark ticker is lower than thresh.bad.data, the function will ignore the asset (default = 0.75)
 #' @param do.complete.data Return a complete/balanced dataset? If TRUE, all missing pairs of ticker-date will be replaced by NA or closest price (see input do.fill.missing.prices). Default = FALSE.
 #' @param do.fill.missing.prices Finds all missing prices and replaces them by their closest price with preference for the previous price. This ensures a balanced dataset for all assets, without any NA. Default = TRUE.
-#' @param do.cache Use caching system? (default = TRUE)
-#' @param cache.folder Where to save cache files? (default = 'BGS_Cache')
+#' @param do.cache Use cache system? (default = TRUE)
+#' @param cache.folder Where to save cache files? (default = file.path(tempdir(), 'BGS_Cache') )
 #' @param do.parallel Flag for using parallel or not (default = FALSE). Before using parallel, make sure you call function future::plan() first.
 #' @param be.quiet Logical for printing statements (default = FALSE)
 #' @return A list with the following items: \describe{
@@ -144,6 +148,9 @@ BatchGetSymbols <- function(tickers,
       invisible(Sys.setlocale("LC_TIME", "C"))
     })
   }
+
+  # disable dplyr group message
+  options(dplyr.summarise.inform = FALSE)
 
   # first screen msgs
 
@@ -279,6 +286,7 @@ BatchGetSymbols <- function(tickers,
     price.high <- price.low <- NULL
 
     if (how.to.aggregate == 'first') {
+
       df.tickers <- df.tickers %>%
         group_by(time.groups, ticker) %>%
         summarise(ref.date = min(ref.date),
@@ -288,9 +296,13 @@ BatchGetSymbols <- function(tickers,
                   price.low = min(price.low),
                   price.close = first(price.close),
                   price.adjusted = first(price.adjusted)) %>%
+        ungroup() %>%
         #select(-time.groups) %>%
         arrange(ticker, ref.date)
+
+
     } else if (how.to.aggregate == 'last') {
+
       df.tickers <- df.tickers %>%
         group_by(time.groups, ticker) %>%
         summarise(ref.date = min(ref.date),
@@ -299,7 +311,8 @@ BatchGetSymbols <- function(tickers,
                   price.high = max(price.high),
                   price.low = min(price.low),
                   price.close = last(price.close),
-                  price.adjusted = last(price.adjusted)) %>%
+                  price.adjusted = last(price.adjusted) ) %>%
+        ungroup() %>%
         #select(-time.groups) %>%
         arrange(ticker, ref.date)
     }
@@ -327,6 +340,22 @@ BatchGetSymbols <- function(tickers,
 
   my.l <- list(df.control = df.control,
                df.tickers = df.tickers)
+
+  # check if cach folder is tempdir()
+  flag <- stringr::str_detect(cache.folder,
+                              pattern = tempdir())
+
+  if (!flag) {
+    warning(stringr::str_glue('\nIt seems you are using a non-default cache folder at {cache.folder}. ',
+                              'Be aware that if any stock event -- split or dividend -- happens ',
+                              'in between cache files, the resulting aggregate cache data will not correspond to reality as ',
+                              'some part of the price data will not be adjusted to the event. ',
+                              'For safety and reproducibility, my suggestion is to use cache system only ',
+                              'for the current session with tempdir(), which is the default option.') )
+  }
+
+  # enable dplyr group message
+  options(dplyr.summarise.inform = TRUE)
 
   return(my.l)
 }

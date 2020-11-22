@@ -1,6 +1,7 @@
-## Version 2.6 (2020-11-20)
+## Version 2.6 (2020-11-22)
 
-- cache dir is now file.path(tempdir(), 'BGS_Cache'). This solves the problem with mismatching price series from cached data between splits or dividends.
+- The cache system is now session-persistent with `cache.dir = file.path(tempdir(), 'BGS_Cache')`. This solves the problem with mismatching price series from cached data between splits or dividends. A new warning is set whenever the user uses cache.dir different from temp.dir()
+- removed dplyr grouping message
 
 ## Version 2.5.9 (2020-11-17)
 
