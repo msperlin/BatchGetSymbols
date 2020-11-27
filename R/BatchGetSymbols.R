@@ -342,7 +342,7 @@ BatchGetSymbols <- function(tickers,
                df.tickers = df.tickers)
 
   # check if cach folder is tempdir()
-  flag <- stringr::str_detect(cache.folder,
+  flag <- stringr::str_detect(string = cache.folder,
                               pattern = tempdir())
 
   if (!flag) {
