@@ -4,7 +4,10 @@
 \alias{GetSP500Stocks}
 \title{Function to download the current components of the SP500 index from Wikipedia}
 \usage{
-GetSP500Stocks(do.cache = TRUE, cache.folder = "BGS_Cache")
+GetSP500Stocks(
+  do.cache = TRUE,
+  cache.folder = file.path(tempdir(), "BGS_Cache")
+)
 }
 \arguments{
 \item{do.cache}{Use cache system? (default = TRUE)}

@@ -4,7 +4,10 @@
 \alias{GetFTSE100Stocks}
 \title{Function to download the current components of the FTSE100 index from Wikipedia}
 \usage{
-GetFTSE100Stocks(do.cache = TRUE, cache.folder = "BGS_Cache")
+GetFTSE100Stocks(
+  do.cache = TRUE,
+  cache.folder = file.path(tempdir(), "BGS_Cache")
+)
 }
 \arguments{
 \item{do.cache}{Use cache system? (default = TRUE)}

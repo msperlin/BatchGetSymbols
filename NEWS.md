@@ -1,3 +1,8 @@
+## Version 2.6.1 (2020-11-27)
+
+- Fixed issue [issue 19](https://github.com/msperlin/BatchGetSymbols/issues/19), which only happened in Windows. 
+- changed default cache dir for ticker grabbing function
+
 ## Version 2.6 (2020-11-22)
 
 - The cache system is now session-persistent with `cache.dir = file.path(tempdir(), 'BGS_Cache')`. This solves the problem with mismatching price series from cached data between splits or dividends. A new warning is set whenever the user uses cache.dir different from temp.dir()

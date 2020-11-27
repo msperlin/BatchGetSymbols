@@ -4,7 +4,11 @@
 \alias{GetIbovStocks}
 \title{Function to download the current components of the Ibovespa index from Bovespa website}
 \usage{
-GetIbovStocks(do.cache = TRUE, cache.folder = "BGS_Cache", max.tries = 10)
+GetIbovStocks(
+  do.cache = TRUE,
+  cache.folder = file.path(tempdir(), "BGS_Cache"),
+  max.tries = 10
+)
 }
 \arguments{
 \item{do.cache}{Use cache system? (default = TRUE)}

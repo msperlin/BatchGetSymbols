@@ -342,13 +342,8 @@ BatchGetSymbols <- function(tickers,
                df.tickers = df.tickers)
 
   # check if cach folder is tempdir()
-<<<<<<< HEAD
-  flag <- stringr::str_detect(string = cache.folder,
-                              pattern = tempdir())
-=======
   flag <- stringr::str_detect(cache.folder,
                               pattern = stringr::fixed(tempdir()))
->>>>>>> 63694a0635c7d0bca8688ddb652d150a28354f98
 
   if (!flag) {
     warning(stringr::str_glue('\nIt seems you are using a non-default cache folder at {cache.folder}. ',
