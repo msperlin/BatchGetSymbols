@@ -17,6 +17,12 @@ GetIbovStocks <- function(do.cache = TRUE,
                                                    'BGS_Cache'),
                           max.tries  = 10){
 
+  # warning note:
+  # https://github.com/msperlin/BatchGetSymbols/issues/25
+
+  warning(paste0("IBOV data is no longer available from the exchange site. ',
+                 ' if you know a difference source, let me know at <https://github.com/msperlin/BatchGetSymbols/issues/25>."))
+
   cache.file <- file.path(cache.folder,
                           paste0('Ibov_Composition_', Sys.Date(), '.rds') )
 
