@@ -1,3 +1,7 @@
+## Version 2.6.2 (2022-03-08)
+
+- Added message for ibov composition
+
 ## Version 2.6.1 (2020-11-27)
 
 - Fixed issue [issue 21](https://github.com/msperlin/BatchGetSymbols/issues/21), which only happened in Windows. 
