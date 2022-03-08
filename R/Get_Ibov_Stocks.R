@@ -21,7 +21,8 @@ GetIbovStocks <- function(do.cache = TRUE,
   # https://github.com/msperlin/BatchGetSymbols/issues/25
 
   warning(paste0("IBOV data is no longer available from the exchange site. ',
-                 ' if you know a difference source, let me know at <https://github.com/msperlin/BatchGetSymbols/issues/25>."))
+                 ' if you know a different and RELIABLE source of Ibov composition, let me know at <https://github.com/msperlin/BatchGetSymbols/issues/25>.",
+                 "Also, you can manually download a csv file with the current composition from B3 in <https://www.b3.com.br/pt_br/market-data-e-indices/indices/indices-amplos/indice-ibovespa-ibovespa-composicao-da-carteira.htm>"))
 
   cache.file <- file.path(cache.folder,
                           paste0('Ibov_Composition_', Sys.Date(), '.rds') )
