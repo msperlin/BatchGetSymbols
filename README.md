@@ -1,6 +1,6 @@
 ## Deprecated!
 
-Package `BatchGetSymbols` is soft-deprecated in favor of [`yfR`](`BatchGetSymbols`). See this [Readme.md](https://github.com/msperlin/yfR) for my motivation in writing a new R package. In practice, this means that `BatchGetSymbols` is no longer maintained besides the correction of major bugs. All efforts goes to the development of `yfR`.
+Package `BatchGetSymbols` is soft-deprecated in favor of [`yfR`](https://github.com/msperlin/yfR). See this [Readme.md](https://github.com/msperlin/yfR) for my motivation in writing a new R package. In practice, this means that `BatchGetSymbols` is no longer maintained besides the correction of major bugs. All efforts goes to the development of `yfR`.
 
 While `BatchGetSymbols` will be be available in CRAN in the near future, my plan is to remove it from CRAN and archive it in Github once `yfR` becames more stable. 
 
