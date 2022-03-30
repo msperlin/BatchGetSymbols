@@ -226,7 +226,14 @@ df.fill.na = function(df.in) {
                   do_color(this_pkg), ' and other R packages for Finance and Economics?',
                   '\nThe second edition (2020) of ',
                   do_color('Analyzing Financial and Economic Data with R'), ' is available at\n',
-                  do_color('https://www.msperlin.com/afedR/') )
+                  do_color('https://www.msperlin.com/afedR/'),
+                  "\n\n",
+                  "WARNING - Package BatchGetSymbols is **soft-deprecated** will soon be substituted ",
+                  "by yfR <https://github.com/msperlin/yfR>. You can still use BatchGetSymbols, ",
+                  "but be aware that it will be removed from CRAN once yfR reaches a stable version and ",
+                  "is submitted to CRAN. If you can, start using ",
+                  "yfR in your new projects.",
+                  '\n\n')
   } else {
     msg <- ''
   }

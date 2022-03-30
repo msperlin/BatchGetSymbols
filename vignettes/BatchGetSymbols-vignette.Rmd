@@ -1,5 +1,5 @@
 ---
-title: "Using BatchGetSymbols to download financial data for several tickers"
+title: "How to use BatchGetSymbols"
 author: "Marcelo Perlin"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

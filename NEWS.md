@@ -1,3 +1,7 @@
+## Version 2.6.3 (2022-03-30)
+
+- Added deprecation message
+
 ## Version 2.6.2 (2022-03-08)
 
 - Added message for ibov composition

@@ -1,6 +1,7 @@
-pandoc: 1.19.2.1
-pkgdown: 1.2.0
+pandoc: 2.17.1.1
+pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   BatchGetSymbols-vignette: BatchGetSymbols-vignette.html
+last_built: 2022-03-30T18:15Z
 
