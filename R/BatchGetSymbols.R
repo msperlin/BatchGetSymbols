@@ -69,7 +69,7 @@ BatchGetSymbols <- function(tickers,
 
   # 20220501 DEPRECATION
   my_message <- stringr::str_glue(
-    "Package BatchGetSymbols will soon be replaced by yfR. \n",
+    "2022-05-01: Package BatchGetSymbols will soon be replaced by yfR. \n",
     "More details about the change is available at github <<www.github.com/msperlin/yfR>",
     "\nYou can install yfR by executing:\n\n",
     "remotes::install_github('msperlin/yfR')"
