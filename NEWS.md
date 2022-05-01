@@ -1,7 +1,7 @@
-## Version 2.6.4 (2022-03-30)
+## Version 2.6.4 (2022-05-01)
 
-- Added deprecation message using lifecycle
-- added message for do_paralell = TRUE (YF added api calls limits)
+- improved deprecation message using lifecycle
+- added message for do_paralell = TRUE (YF added api calls limits) (see issue [27](https://github.com/msperlin/BatchGetSymbols/issues/27))
 - improved tests
 
 ## Version 2.6.3 (2022-03-30)
