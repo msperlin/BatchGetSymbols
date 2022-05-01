@@ -67,6 +67,16 @@ BatchGetSymbols <- function(tickers,
                             do.parallel = FALSE,
                             be.quiet = FALSE) {
 
+  # 20220501 DEPRECATION
+  my_message <- stringr::str_glue(
+    "Package BatchGetSymbols will soon be replaced by yfR. \n",
+    "More details about the change is available at github <<www.github.com/msperlin/yfR>",
+    "\nYou can install yfR by executing:\n\n",
+    "remotes::install_github('msperlin/yfR')"
+  )
+  lifecycle::deprecate_soft(when = "2.6.4", "BatchGetSymbols()", "yfR::yf_get()",
+                            details = my_message)
+
   # check for internet
   test.internet <- curl::has_internet()
   if (!test.internet) {
@@ -147,6 +157,23 @@ BatchGetSymbols <- function(tickers,
       invisible(Sys.setlocale("LC_MESSAGES", "C"))
       invisible(Sys.setlocale("LC_TIME", "C"))
     })
+  }
+
+  # check if using do_parallel = TRUE
+  # 20220501 Yahoo finance started setting limits to api calls, which
+  # invalidates the use of any parallel computation
+  if (do.parallel) {
+    my_message <- stringr::str_glue(
+      "Since 2022-04-25, Yahoo Finance started to set limits to api calls, ",
+      "resulting in 401 errors. When using parallel computations for fetching ",
+      "data, the limit is reached easily. Said that, the parallel option is now",
+      " disabled by default. Please set do_parallel = FALSE to use this function.",
+      "\n\n",
+      "Returning empty dataframe.")
+
+    cli::cli_alert_danger(my_message)
+    return(data.frame())
+
   }
 
   # disable dplyr group message

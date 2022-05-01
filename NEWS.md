@@ -1,3 +1,9 @@
+## Version 2.6.4 (2022-03-30)
+
+- Added deprecation message using lifecycle
+- added message for do_paralell = TRUE (YF added api calls limits)
+- improved tests
+
 ## Version 2.6.3 (2022-03-30)
 
 - Added deprecation message
