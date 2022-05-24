@@ -1,12 +1,12 @@
-## Deprecated!
-
-Package `BatchGetSymbols` is soft-deprecated in favor of [`yfR`](https://github.com/msperlin/yfR). See this [Readme.md](https://github.com/msperlin/yfR) for my motivation in writing a new R package. In practice, this means that `BatchGetSymbols` is no longer maintained besides the correction of major bugs. All efforts goes to the development of `yfR`.
-
-While `BatchGetSymbols` will be be available in CRAN in the near future, my plan is to remove it from CRAN and archive it in Github once `yfR` becames more stable. 
+> :warning: Package `BatchGetSymbols` is soft-deprecated in favor of [`yfR`](https://github.com/msperlin/yfR). See this [Readme.md](https://github.com/msperlin/yfR) for my motivation in writing a new R package. In practice, this means that `BatchGetSymbols` is no longer maintained besides the correction of major bugs. All efforts goes to the development of `yfR`. While `BatchGetSymbols` will be be available in CRAN in the near future, my plan is to remove it from CRAN and archive it in Github once `yfR` becames more stable. 
 
 ## Motivation
 
 [![](https://cranlogs.r-pkg.org/badges/BatchGetSymbols)](https://CRAN.R-project.org/package=BatchGetSymbols)
+[![CRAN Status
+Badge](http://www.r-pkg.org/badges/version/BatchGetSymbols)](https://cran.r-project.org/package=BatchGetSymbols)
+[![CRAN Total
+Downloads](http://cranlogs.r-pkg.org/badges/grand-total/BatchGetSymbols)](https://cran.r-project.org/package=BatchGetSymbols)
 
 BatchGetSymbols is a R package for large-scale download of financial data from Yahoo Finance. Based on a set of tickers and date ranges, the package will download and organize the financial data in the tidy/long format.
 
