@@ -67,15 +67,18 @@ BatchGetSymbols <- function(tickers,
                             do.parallel = FALSE,
                             be.quiet = FALSE) {
 
-  # 20220501 DEPRECATION
+  # 20220701 DEPRECATION
   my_message <- stringr::str_glue(
-    "2022-05-01: Package BatchGetSymbols will soon be replaced by yfR. \n",
-    "More details about the change is available at github <<www.github.com/msperlin/yfR>",
-    "\nYou can install yfR by executing:\n\n",
-    "remotes::install_github('msperlin/yfR')"
+    "2022-07-01: BatchGetSymbols is being **replaced** by package yfR, ",
+    " a better and more comprehensive module for fetching Yahoo Finance data.\n",
+    "More details about the change is available at github <https://github.com/ropensci/yfR>",
+    "\nYou can install yfR with the following code:\n\n",
+    "install.packages('yfR')\n\n",
+    "and fetch data with function yf_get()"
   )
-  lifecycle::deprecate_soft(when = "2.6.4", "BatchGetSymbols()", "yfR::yf_get()",
-                            details = my_message)
+  lifecycle::deprecate_soft(when = "v2.6.4 (2022-07-01)",
+                            what = "BatchGetSymbols::BatchGetSymbols()",
+                            details = c(i = my_message) )
 
   # check for internet
   test.internet <- curl::has_internet()

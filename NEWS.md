@@ -1,3 +1,7 @@
+## Version 2.6.5 (2022-07-01)
+
+- again improved deprecation message
+
 ## Version 2.6.4 (2022-05-01)
 
 - improved deprecation message using lifecycle
