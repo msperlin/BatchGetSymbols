@@ -228,7 +228,7 @@ BatchGetSymbols <- function(tickers,
     formals.parallel <- formals(future::plan())
     used.workers <- formals.parallel$workers
 
-    available.cores <- future::availableCores()
+    available.cores <- parallelly::availableCores()
 
     if (!be.quiet) {
       message(paste0('\nRunning parallel BatchGetSymbols with ', used.workers, ' cores (',

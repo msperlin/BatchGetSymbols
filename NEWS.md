@@ -1,3 +1,7 @@
+## Version 2.6.6 (2024-02-01)
+
+- now using paralelly::availlableCores()
+
 ## Version 2.6.5 (2022-07-01)
 
 - again improved deprecation message
