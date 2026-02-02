@@ -9,6 +9,7 @@ Imports: stringr, curl, quantmod, XML, tidyr,
     lubridate, scales, furrr, purrr, future, tibble, zoo, crayon,
     cli, lifecycle, parallelly
 License: GPL-2
+Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.3
 Suggests: knitr,

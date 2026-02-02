@@ -238,9 +238,10 @@ BatchGetSymbols <- function(tickers,
 
 
     # test if plan() was called
-    msg <- utils::capture.output(future::plan())
+    #msg <- utils::capture.output(future::plan())
+    #flag <- stringr::str_detect(msg[1], 'sequential')
 
-    flag <- stringr::str_detect(msg[1], 'sequential')
+    flag <- inherits(future::plan(), "sequential")
 
     if (flag) {
       stop(paste0('When using do.parallel = TRUE, you need to call future::plan() to configure your parallel settings. \n',
