@@ -226,7 +226,7 @@ BatchGetSymbols <- function(tickers,
 
     # find number of used cores
     formals.parallel <- formals(future::plan())
-    used.workers <- formals.parallel$workers
+    used.workers <- future::nbrOfWorkers()
 
     available.cores <- parallelly::availableCores()
 
