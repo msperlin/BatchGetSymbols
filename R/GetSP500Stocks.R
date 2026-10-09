@@ -36,7 +36,7 @@ GetSP500Stocks <- function(do.cache = TRUE,
   df.SP500Stocks <- my.url %>%
     read_html() %>%
     html_nodes(xpath = my.xpath) %>%
-    html_table(fill = TRUE)
+    html_table()
 
   df.SP500Stocks <- df.SP500Stocks[[1]]
 
